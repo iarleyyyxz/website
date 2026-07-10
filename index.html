@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Video Editor — Portfolio</title>
+<meta name="description" content="Video editor specialized in cutting, motion and color grading. Premiere Pro, After Effects and Photoshop.">
+
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="assets/favicon-64.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ================= BOOT SEQUENCE ================= -->
+<div class="boot-screen" id="bootScreen">
+  <div class="boot-screen__log" id="bootLog"></div>
+  <button class="boot-screen__skip" id="bootSkip" type="button">Skip intro →</button>
+</div>
+
+<!-- custom cursor: transparent ring with white outline -->
+<div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
+
+<!-- subtle film grain texture -->
+<div class="grain" aria-hidden="true"></div>
+<div class="noise-layer" aria-hidden="true"></div>
+<div class="scanlines" aria-hidden="true"></div>
+
+<!-- ================= HEADER ================= -->
+<header class="header" id="header">
+  <div class="header__inner">
+    <a href="#home" class="logo">
+      <span class="logo__mark">$</span> editor<span class="logo__slash">@</span>reel<span class="logo__cursor">_</span>
+    </a>
+
+    <nav class="nav" id="mainNav">
+      <a href="#home" class="nav__link">Home</a>
+      <a href="#tools" class="nav__link">Tools</a>
+      <a href="#changelog" class="nav__link">Log</a>
+      <a href="#work" class="nav__link">Work</a>
+      <a href="#contact" class="nav__link nav__link--cta">Contact</a>
+    </nav>
+
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main>
+
+  <!-- ================= HERO ================= -->
+  <section class="hero" id="home">
+
+    <!-- background: falling timecodes / hex values, canvas-driven, no external deps -->
+    <div class="hero__rain-wrap" aria-hidden="true">
+      <canvas id="heroRain" class="hero__rain"></canvas>
+      <div class="hero__rain-scrim"></div>
+    </div>
+
+    <div class="term-window reveal">
+      <div class="term-window__bar">
+        <span class="term-window__path">editor@reel: ~</span>
+        <div class="term-window__controls">
+          <span class="term-window__btn" title="Minimize">—</span>
+          <span class="term-window__btn" title="Maximize">▢</span>
+          <span class="term-window__btn term-window__btn--close" title="Close">×</span>
+        </div>
+      </div>
+
+      <div class="term-window__body hero__inner">
+        <div class="hero__status">
+          <span class="rec-dot"></span>
+          <span>OPEN FOR NEW PROJECTS</span>
+          <span class="timecode" id="timecode">00:00:00:00</span>
+        </div>
+
+        <p class="eyebrow">Video Editor</p>
+
+        <h1 class="hero__title">
+          Footage in.<br>
+          <span class="hero__title--accent">Story</span> out.
+        </h1>
+
+        <p class="hero__subtitle">
+          Send me the raw files and a deadline. I'll send back
+          something people actually watch to the end — not just
+          the first five seconds.
+        </p>
+
+        <div class="hero__actions">
+          <a href="#contact" class="btn btn--primary">Let's talk</a>
+          <a href="#work" class="btn btn--ghost">See my work</a>
+        </div>
+
+        <div class="hero__scrubber" aria-hidden="true">
+          <div class="hero__scrubber-track">
+            <div class="hero__scrubber-playhead"></div>
+          </div>
+          <div class="hero__scrubber-labels">
+            <span>00:00</span><span>00:05</span><span>00:10</span><span>00:15</span><span>00:20</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <a href="#tools" class="scroll-cue" aria-label="Scroll down">
+      <span>Scroll</span>
+      <span class="scroll-cue__line"></span>
+    </a>
+  </section>
+
+  <!-- ================= TOOLS (timeline marquee) ================= -->
+  <section class="tools" id="tools">
+    <div class="section-head reveal">
+      <p class="eyebrow">Software</p>
+      <h2 class="section-title">What I edit with</h2>
+      <p class="section-lead">Pr for the cut, Ae when it needs to move, Ps when a thumbnail has to stop someone mid-scroll.</p>
+    </div>
+
+    <div class="timeline-ruler reveal" aria-hidden="true">
+      <span>00:00</span><span>00:05</span><span>00:10</span><span>00:15</span><span>00:20</span><span>00:25</span><span>00:30</span>
+    </div>
+
+    <div class="marquee reveal">
+      <div class="marquee__track" id="marqueeTrack">
+        <!-- duplicated via JS for a seamless loop -->
+        <div class="clip clip--pr">
+          <span class="clip__badge">Pr</span>
+          <div class="clip__info">
+            <strong>Premiere Pro</strong>
+            <small>Cutting &amp; editing</small>
+          </div>
+        </div>
+        <div class="clip clip--ae">
+          <span class="clip__badge">Ae</span>
+          <div class="clip__info">
+            <strong>After Effects</strong>
+            <small>Motion &amp; VFX</small>
+          </div>
+        </div>
+        <div class="clip clip--ps">
+          <span class="clip__badge">Ps</span>
+          <div class="clip__info">
+            <strong>Photoshop</strong>
+            <small>Thumbnails &amp; retouch</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CHANGELOG ================= -->
+  <section class="changelog" id="changelog">
+    <div class="section-head reveal">
+      <p class="eyebrow">Changelog</p>
+      <h2 class="section-title">cat CHANGELOG.md</h2>
+      <p class="section-lead">No case studies yet, so here's the version history instead.</p>
+    </div>
+
+    <div class="changelog__list">
+      <div class="changelog__entry reveal">
+        <span class="changelog__version">v0.1.0</span>
+        <p>First cuts. Had no idea what an in-point was.</p>
+      </div>
+
+      <div class="changelog__entry reveal">
+        <span class="changelog__version">v0.3.0</span>
+        <p>Learned to trim silences before trimming patience.</p>
+      </div>
+
+      <div class="changelog__entry reveal">
+        <span class="changelog__version">v0.6.0</span>
+        <p>Fixed the "why does this look orange" bug. Turned out it was on purpose.</p>
+      </div>
+
+      <div class="changelog__entry reveal">
+        <span class="changelog__version">v1.0.0</span>
+        <p>Shipped a project without a single 2am "quick fix."</p>
+      </div>
+
+      <div class="changelog__entry reveal">
+        <span class="changelog__version">v1.4.0</span>
+        <p>Added color grading to the toolkit. Stopped being scared of waveforms.</p>
+      </div>
+
+      <div class="changelog__entry changelog__entry--current reveal">
+        <span class="changelog__version">v2.0.0</span>
+        <span class="changelog__tag">current</span>
+        <p>Faster turnaround, fewer folders named copy_of_copy_final.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= WORK (featured video showcase) ================= -->
+  <section class="work" id="work">
+    <div class="work__glow" aria-hidden="true"></div>
+
+    <div class="section-head reveal">
+      <p class="eyebrow">Showreel</p>
+      <h2 class="section-title">This is where the edits will live</h2>
+      <p class="section-lead">My reel's still in the cutting room — but the slots are ready. First edit that wraps goes right here.</p>
+    </div>
+
+    <!--
+      HOW TO ADD A REAL VIDEO
+      1. Replace the <span class="video-card__play"> block with a real
+         <video> tag, a thumbnail <img>, or an <iframe> (YouTube/Vimeo embed).
+      2. Update .video-card__index (e.g. "Video 01") with the project title.
+      3. Remove the "video-card--empty" class and the "Coming soon" tag.
+      4. Give it a unique data-video-id and copy the .video-card__like
+         button from the featured card below so it gets its own like count.
+    -->
+    <div class="video-grid reveal">
+
+      <div class="video-card video-card--filled video-card--featured" data-video-id="featured">
+        <div class="video-card__frame">
+          <iframe
+            src="https://www.youtube-nocookie.com/embed/1wDBGx-JlHs"
+            title="Featured edit"
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <button type="button" class="video-card__like" aria-pressed="false" aria-label="Like this video">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 20s-7-4.35-9.5-8.8C.7 7.5 2.2 4 5.6 4c2 0 3.4 1.1 4.4 2.6C11 5.1 12.4 4 14.4 4c3.4 0 4.9 3.5 3.1 7.2C19 15.65 12 20 12 20Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+          <span class="video-card__like-count">0</span>
+        </button>
+        <div class="video-card__meta">
+          <span class="video-card__index">Featured cut</span>
+        </div>
+      </div>
+
+      <div class="video-card video-card--filled" data-video-id="video-02">
+        <div class="video-card__frame">
+          <iframe
+            src="https://www.youtube-nocookie.com/embed/_G4I8Jvd3jU"
+            title="Video 02"
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <button type="button" class="video-card__like" aria-pressed="false" aria-label="Like this video">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 20s-7-4.35-9.5-8.8C.7 7.5 2.2 4 5.6 4c2 0 3.4 1.1 4.4 2.6C11 5.1 12.4 4 14.4 4c3.4 0 4.9 3.5 3.1 7.2C19 15.65 12 20 12 20Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+          <span class="video-card__like-count">0</span>
+        </button>
+        <div class="video-card__meta">
+          <span class="video-card__index">Video 02</span>
+        </div>
+      </div>
+
+      <div class="video-card video-card--empty">
+        <span class="video-card__tag">Coming soon</span>
+        <span class="video-card__play">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M8 5v14l11-7L8 5z" fill="currentColor"/></svg>
+        </span>
+        <div class="video-card__meta">
+          <span class="video-card__index">Video 03</span>
+        </div>
+      </div>
+
+      <div class="video-card video-card--empty">
+        <span class="video-card__tag">Coming soon</span>
+        <span class="video-card__play">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M8 5v14l11-7L8 5z" fill="currentColor"/></svg>
+        </span>
+        <div class="video-card__meta">
+          <span class="video-card__index">Video 04</span>
+        </div>
+      </div>
+
+    </div>
+
+    <p class="work__note reveal">
+      <svg viewBox="0 0 24 24" fill="none" class="work__note-icon"><path d="M3 10l1.5-5.5L18 8l-1.5 5.5L3 10z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><rect x="3" y="10" width="18" height="9" rx="1" stroke="currentColor" stroke-width="1.5"/></svg>
+      Nothing published yet. Be the first cut on this page.
+      <a href="#contact" class="work__note-link">Get in touch</a>
+    </p>
+  </section>
+
+  <!-- ================= CONTACT ================= -->
+  <section class="contact" id="contact">
+    <div class="contact__inner reveal">
+      <p class="eyebrow">Contact</p>
+      <h2 class="section-title">Got footage that needs a story?</h2>
+      <p class="section-lead">Send the files, the deadline, and anything you really don't want cut. I'll take it from there.</p>
+
+      <a href="mailto:iarleyvisualsgfx@gmail.com" class="contact__email">iarleyvisualsgfx@gmail.com</a>
+
+      <div class="contact__socials">
+        <a href="https://wa.me/5521995680301" class="social-link" aria-label="WhatsApp" title="WhatsApp" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M6.5 17.5 5 20l2.6-1.4A8 8 0 1 0 5 12a7.9 7.9 0 0 0 1.5 5.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 10.3c.4 2 2.2 3.8 4.2 4.2.7.1 1-.6.8-1.2l-.4-.9c-.1-.3-.5-.4-.8-.3l-.7.3c-.6-.4-1.5-1.3-1.9-1.9l.3-.7c.1-.3 0-.7-.3-.8l-.9-.4c-.6-.2-1.3.1-1.2.8Z" fill="currentColor"/></svg>
+        </a>
+        <a href="https://ytjobs.co/talent/profile/579002" class="social-link" aria-label="YTJobs portfolio" title="YTJobs — Portfolio" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none"><rect x="3.5" y="5" width="17" height="14" rx="3" stroke="currentColor" stroke-width="1.6"/><path d="M10 9.5v5l4.5-2.5L10 9.5Z" fill="currentColor"/></svg>
+        </a>
+        <a href="https://x.com/iarleyvisuals" class="social-link" aria-label="X (Twitter)" title="X — @iarleyvisuals" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M5 5l14 14M19 5 5 19" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </a>
+        <button type="button" class="social-link social-link--copy" data-copy="iarleyyyy" aria-label="Discord: iarleyyyy — click to copy" title="Discord — click to copy username">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M8 9.5c2.8-.9 5.2-.9 8 0M7.2 15.3c2.9 1 6.7 1 9.6 0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><rect x="3.5" y="6.5" width="17" height="11.5" rx="5.5" stroke="currentColor" stroke-width="1.6"/><circle cx="9.2" cy="12.2" r="1.15" fill="currentColor"/><circle cx="14.8" cy="12.2" r="1.15" fill="currentColor"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= RATING ================= -->
+  <section class="rating" id="rating">
+    <div class="rating__inner reveal">
+      <p class="eyebrow">Feedback</p>
+      <h2 class="section-title">Rate this page</h2>
+      <p class="section-lead">Be honest — takes five seconds, no email required.</p>
+
+      <div class="rating__stars" id="ratingStars" role="radiogroup" aria-label="Star rating">
+        <button type="button" class="rating__star" data-value="1" role="radio" aria-checked="false" aria-label="1 star">★</button>
+        <button type="button" class="rating__star" data-value="2" role="radio" aria-checked="false" aria-label="2 stars">★</button>
+        <button type="button" class="rating__star" data-value="3" role="radio" aria-checked="false" aria-label="3 stars">★</button>
+        <button type="button" class="rating__star" data-value="4" role="radio" aria-checked="false" aria-label="4 stars">★</button>
+        <button type="button" class="rating__star" data-value="5" role="radio" aria-checked="false" aria-label="5 stars">★</button>
+      </div>
+
+      <textarea id="ratingComment" class="rating__comment" rows="3" placeholder="Anything specific? (optional)"></textarea>
+
+      <button type="button" class="btn btn--primary" id="ratingSubmit">Send feedback</button>
+
+      <p class="rating__thanks" id="ratingThanks" hidden>Got it — thanks for the read.</p>
+    </div>
+  </section>
+
+</main>
+
+<!-- ================= OS TASKBAR ================= -->
+<div class="os-panel" id="osPanel" aria-hidden="true">
+  <div class="os-panel__left">
+    <span class="os-panel__logo">▦</span>
+  </div>
+
+  <nav class="os-panel__workspaces">
+    <a href="#home" class="os-panel__ws" data-ws="1">1</a>
+    <a href="#tools" class="os-panel__ws" data-ws="2">2</a>
+    <a href="#changelog" class="os-panel__ws" data-ws="3">3</a>
+    <a href="#work" class="os-panel__ws" data-ws="4">4</a>
+    <a href="#contact" class="os-panel__ws" data-ws="5">5</a>
+  </nav>
+
+  <div class="os-panel__right">
+    <svg class="os-panel__icon" viewBox="0 0 24 24" fill="none" title="Network">
+      <path d="M2 8.5a15 15 0 0 1 20 0M5.5 12a10 10 0 0 1 13 0M9 15.5a5 5 0 0 1 6 0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      <circle cx="12" cy="19" r="1.2" fill="currentColor"/>
+    </svg>
+    <svg class="os-panel__icon" viewBox="0 0 24 24" fill="none" title="Volume">
+      <path d="M4 9v6h4l5 4V5L8 9H4z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+      <path d="M17 9a4.5 4.5 0 0 1 0 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+    </svg>
+    <span class="os-panel__clock" id="osClock">00:00</span>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="neofetch">
+    <div class="neofetch__logo" aria-hidden="true">
+      <img src="assets/avatar.png" alt="" loading="lazy">
+    </div>
+    <ul class="neofetch__specs">
+      <li><span class="neofetch__key">OS</span>EditorOS 26.04 LTS</li>
+      <li><span class="neofetch__key">Kernel</span>cut-and-color 6.6</li>
+      <li><span class="neofetch__key">Shell</span>creative-bash</li>
+      <li><span class="neofetch__key">Apps</span>Premiere Pro, After Effects, Photoshop</li>
+      <li><span class="neofetch__key">Uptime</span>fueled by coffee</li>
+      <li><span class="neofetch__key">Memory</span>ideas: unlimited</li>
+    </ul>
+  </div>
+  <p class="footer__copy">© <span id="year"></span> — Video Editor. Cut frame by frame.</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
