@@ -662,8 +662,7 @@ section {
 
 .video-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-auto-rows: 170px;
+  grid-template-columns: repeat(2, 1fr);
   gap: 20px;
 }
 
@@ -674,13 +673,14 @@ section {
   display: flex;
   align-items: flex-end;
   padding: 18px;
+  aspect-ratio: 16 / 9;
   background: linear-gradient(155deg, #21262c, #14171a);
   transition: transform .35s var(--ease), box-shadow .35s var(--ease);
 }
 
 .video-card--featured {
-  grid-column: span 2;
-  grid-row: span 2;
+  grid-column: auto;
+  grid-row: auto;
 }
 
 .video-card--empty {
@@ -691,7 +691,7 @@ section {
 .video-card--filled {
   padding: 0;
   align-items: flex-end;
-  border: 1px solid var(--line);
+  border: none;
   background: #000;
 }
 
@@ -1201,8 +1201,7 @@ section {
   .track { grid-template-columns: 40px 40px 1fr; gap: 16px; }
   section { padding: 90px 24px; }
 
-  .video-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 150px; }
-  .video-card--featured { grid-column: span 2; grid-row: span 1; }
+  .video-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 560px) {
@@ -1210,6 +1209,5 @@ section {
   .hero__status { flex-wrap: wrap; }
   .timecode { border-left: none; padding-left: 0; }
 
-  .video-grid { grid-template-columns: 1fr; grid-auto-rows: 160px; }
-  .video-card--featured { grid-column: span 1; grid-row: span 1; height: 220px; }
+  .video-grid { grid-template-columns: 1fr; }
 }
