@@ -109,69 +109,6 @@
   }
 
   /* ============================================================
-     HERO BACKGROUND — falling timecode / hex "code rain"
-     ============================================================ */
-  const rainCanvas = document.getElementById("heroRain");
-  if (rainCanvas) {
-    const ctx = rainCanvas.getContext("2d");
-    const heroEl = document.querySelector(".hero");
-    const chars = "0123456789ABCDEF:./".split("");
-    const fontSize = 15;
-    let columns = [];
-    let dpr = Math.min(window.devicePixelRatio || 1, 2);
-
-    function sizeCanvas() {
-      const rect = heroEl.getBoundingClientRect();
-      rainCanvas.width = rect.width * dpr;
-      rainCanvas.height = rect.height * dpr;
-      rainCanvas.style.width = rect.width + "px";
-      rainCanvas.style.height = rect.height + "px";
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-      const colCount = Math.ceil(rect.width / fontSize);
-      columns = new Array(colCount).fill(0).map(() => ({
-        y: Math.random() * -100,
-        speed: 0.4 + Math.random() * 0.9,
-      }));
-    }
-
-    sizeCanvas();
-    window.addEventListener("resize", sizeCanvas);
-
-    function drawRain() {
-      const rect = heroEl.getBoundingClientRect();
-      ctx.fillStyle = "rgba(9, 12, 18, 0.15)";
-      ctx.fillRect(0, 0, rect.width, rect.height);
-
-      ctx.font = `${fontSize}px "JetBrains Mono", monospace`;
-
-      columns.forEach((col, i) => {
-        const char = chars[Math.floor(Math.random() * chars.length)];
-        const x = i * fontSize;
-        const y = col.y * fontSize;
-
-        ctx.fillStyle = "rgba(76, 141, 255, 0.9)";
-        ctx.fillText(char, x, y);
-
-        ctx.fillStyle = "rgba(76, 141, 255, 0.28)";
-        ctx.fillText(chars[Math.floor(Math.random() * chars.length)], x, y - fontSize);
-
-        col.y += col.speed;
-        if (y > rect.height + fontSize * 2 && Math.random() > 0.975) {
-          col.y = Math.random() * -40;
-          col.speed = 0.4 + Math.random() * 0.9;
-        }
-      });
-    }
-
-    if (!prefersReducedMotion) {
-      setInterval(drawRain, 60);
-    } else {
-      drawRain();
-    }
-  }
-
-  /* ============================================================
      HEADER — background on scroll
      ============================================================ */
   const header = document.getElementById("header");

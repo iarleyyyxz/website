@@ -322,6 +322,22 @@ section {
   overflow: hidden;
 }
 
+.hero__video-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero__video-bg video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .hero__rain-wrap {
   position: absolute;
   inset: 0;
@@ -330,20 +346,12 @@ section {
   z-index: 0;
 }
 
-.hero__rain {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  opacity: .6;
-}
-
 .hero__rain-scrim {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 70% 55% at 50% 45%, transparent, var(--bg) 78%),
-    linear-gradient(to bottom, rgba(9,12,18,.25), rgba(9,12,18,.55) 70%, var(--bg) 100%);
+    radial-gradient(ellipse 70% 55% at 50% 45%, transparent, var(--bg) 92%),
+    linear-gradient(to bottom, rgba(0,0,0,.1), rgba(0,0,0,.25) 70%, var(--bg) 100%);
 }
 
 .hero__inner {
@@ -1088,9 +1096,9 @@ section {
   border-radius: 10px;
   overflow: hidden;
   border: 1px solid var(--line);
-  background: rgba(15, 20, 28, .82);
-  backdrop-filter: blur(16px);
-  box-shadow: 0 40px 90px -36px rgba(0,0,0,.65), 0 0 0 1px rgba(76,141,255,.05);
+  background: rgba(12, 12, 14, .38);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 40px 90px -36px rgba(0,0,0,.65);
 }
 
 .term-window__bar {
@@ -1098,8 +1106,8 @@ section {
   align-items: center;
   justify-content: space-between;
   padding: 11px 16px;
-  background: rgba(20, 26, 36, .9);
-  border-bottom: 1px solid var(--line);
+  background: rgba(14, 14, 16, .4);
+  border-bottom: 1px solid rgba(255,255,255,.08);
 }
 
 .term-window__path {
@@ -1127,6 +1135,7 @@ section {
 
 /* keep hero__inner's own layout rules, just drop the outer positioning duties */
 .term-window .hero__inner { max-width: none; margin: 0; width: auto; }
+.term-window .hero__inner :is(h1, p, span, a) { text-shadow: 0 2px 12px rgba(0,0,0,.5); }
 
 @media (max-width: 560px) {
   .term-window { width: 94vw; }
