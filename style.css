@@ -624,6 +624,16 @@ section {
 
 .changelog__entry--current p { grid-column: 1 / -1; }
 
+.changelog__entry--about {
+  grid-template-columns: 1fr;
+  padding: 26px 0;
+}
+.changelog__entry--about p {
+  max-width: 640px;
+  font-size: 1.05rem;
+  color: var(--text-muted);
+}
+
 @media (max-width: 620px) {
   .changelog__entry,
   .changelog__entry--current {
@@ -670,7 +680,7 @@ section {
 
 .video-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 20px;
 }
 
