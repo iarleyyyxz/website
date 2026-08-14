@@ -1372,3 +1372,92 @@ section {
   .video-grid--expanded .video-card, .video-grid--expanded .video-card--featured { grid-column: span 1; aspect-ratio: 16 / 9; }
   .about__terminal-body { padding: 22px; }
 }
+
+
+/* ==========================================================
+   WORK ACTIONS — definitive centered layout
+   ========================================================== */
+.work__actions {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  max-width: 1280px;
+  margin: 36px auto 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center !important;
+  justify-content: center;
+  gap: 14px;
+  text-align: center !important;
+}
+
+.work__all-videos,
+.work__start-project {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  align-self: center !important;
+  margin: 0 auto !important;
+  width: max-content;
+  min-width: 170px;
+  text-align: center;
+}
+
+.work__all-videos {
+  appearance: none;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 12px 22px;
+  background: rgba(255,255,255,.03);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: .92rem;
+  font-weight: 600;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: border-color .2s ease, background .2s ease, color .2s ease, transform .2s ease;
+}
+
+.work__all-videos:hover {
+  border-color: var(--accent);
+  background: rgba(76,141,255,.09);
+  color: var(--text);
+  transform: translateY(-2px);
+}
+
+.work__all-videos-prompt,
+.work__all-videos-arrow {
+  color: var(--accent);
+}
+
+.work__start-project {
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  padding: 13px 24px;
+  background: var(--accent);
+  color: #06090F;
+  font-weight: 700;
+  line-height: 1.2;
+  text-decoration: none;
+  box-shadow: 0 10px 30px -18px rgba(76,141,255,.8);
+  transition: transform .2s ease, background .2s ease, box-shadow .2s ease;
+}
+
+.work__start-project:hover {
+  background: #6BA1FF;
+  color: #06090F;
+  transform: translateY(-2px);
+  box-shadow: 0 14px 34px -16px rgba(76,141,255,.9);
+}
+
+@media (max-width: 560px) {
+  .work__actions {
+    margin-top: 28px;
+    gap: 12px;
+  }
+  .work__all-videos,
+  .work__start-project {
+    min-width: 160px;
+  }
+}
