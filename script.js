@@ -90,7 +90,7 @@
     document.addEventListener("mouseleave", () => ring.classList.remove("is-visible"));
     document.addEventListener("mouseenter", () => ring.classList.add("is-visible"));
 
-    const interactiveSelectors = "a, button, .clip, .track, .video-card, .term-window__btn, .os-panel__ws, .rating__star, .video-card__like";
+    const interactiveSelectors = "a, button, .clip, .track, .filmclip, .term-window__btn, .os-panel__ws";
     document.addEventListener("mouseover", (e) => {
       if (e.target.closest(interactiveSelectors)) ring.classList.add("is-active");
     });
@@ -293,96 +293,71 @@
   }
 
   /* ============================================================
-     RATING WIDGET — star rating + optional comment
+     SHOWROOM — filmstrip swaps the big viewer
      ============================================================ */
-  const ratingStars = document.getElementById("ratingStars");
-  const ratingSubmit = document.getElementById("ratingSubmit");
-  const ratingComment = document.getElementById("ratingComment");
-  const ratingThanks = document.getElementById("ratingThanks");
+  const showroomFrame = document.getElementById("showroomFrame");
+  const showroomTitle = document.getElementById("showroomTitle");
+  const showroomPos = document.getElementById("showroomPos");
+  const showroomStrip = document.getElementById("showroomStrip");
 
-  if (ratingStars && ratingSubmit) {
-    const stars = Array.from(ratingStars.querySelectorAll(".rating__star"));
-    let selected = 0;
+  if (showroomFrame && showroomStrip) {
+    const clips = Array.from(showroomStrip.querySelectorAll(".filmclip"));
 
-    function paintStars(value) {
-      stars.forEach((star) => {
-        const isFilled = Number(star.dataset.value) <= value;
-        star.classList.toggle("is-hover", isFilled);
+    clips.forEach((clip, i) => {
+      clip.addEventListener("click", () => {
+        const id = clip.dataset.id;
+        const title = clip.dataset.title;
+
+        showroomFrame.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1`;
+        if (showroomTitle) showroomTitle.textContent = title;
+        if (showroomPos) showroomPos.textContent = String(i + 1).padStart(2, "0");
+
+        clips.forEach((c) => c.classList.toggle("is-active", c === clip));
+        clip.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
       });
-    }
-
-    stars.forEach((star) => {
-      star.addEventListener("mouseenter", () => paintStars(Number(star.dataset.value)));
-      star.addEventListener("focus", () => paintStars(Number(star.dataset.value)));
-
-      star.addEventListener("click", () => {
-        selected = Number(star.dataset.value);
-        stars.forEach((s) => {
-          const isSelected = Number(s.dataset.value) <= selected;
-          s.classList.toggle("is-selected", isSelected);
-          s.setAttribute("aria-checked", String(Number(s.dataset.value) === selected));
-        });
-      });
-    });
-
-    ratingStars.addEventListener("mouseleave", () => paintStars(selected));
-
-    ratingSubmit.addEventListener("click", () => {
-      if (selected === 0) {
-        paintStars(0);
-        stars.forEach((s) => s.classList.add("is-hover"));
-        setTimeout(() => paintStars(selected), 300);
-        return;
-      }
-
-      const entry = {
-        value: selected,
-        comment: ratingComment.value.trim(),
-        date: new Date().toISOString(),
-      };
-
-      try {
-        const key = "editorSiteFeedback";
-        const existing = JSON.parse(localStorage.getItem(key)) || [];
-        existing.push(entry);
-        localStorage.setItem(key, JSON.stringify(existing));
-      } catch (err) {
-        // storage unavailable — feedback still confirmed to the visitor below
-      }
-
-      ratingThanks.hidden = false;
-      ratingSubmit.textContent = "Sent ✓";
-      ratingSubmit.disabled = true;
-      ratingComment.disabled = true;
-      stars.forEach((s) => (s.disabled = true));
     });
   }
 
   /* ============================================================
-     ALL VIDEOS MODAL
+     NLE WAVEFORM — random-ish audio bars in the hero timeline
      ============================================================ */
-  const videoModal = document.getElementById("videoModal");
-  const openModalBtn = document.getElementById("openVideoModal");
-
-  if (videoModal && openModalBtn) {
-    const closeEls = videoModal.querySelectorAll("[data-close-modal]");
-
-    function openVideoModal() {
-      videoModal.classList.add("open");
-      videoModal.setAttribute("aria-hidden", "false");
-      document.body.style.overflow = "hidden";
+  const waveformEl = document.getElementById("nleWaveform");
+  if (waveformEl) {
+    const bars = 56;
+    let html = "";
+    for (let i = 0; i < bars; i++) {
+      const h = Math.round(18 + Math.abs(Math.sin(i * 0.45)) * 55 + Math.random() * 20);
+      html += `<span style="height:${Math.min(100, h)}%"></span>`;
     }
-    function closeVideoModal() {
-      videoModal.classList.remove("open");
-      videoModal.setAttribute("aria-hidden", "true");
-      document.body.style.overflow = "";
-    }
+    waveformEl.innerHTML = html;
+  }
 
-    openModalBtn.addEventListener("click", openVideoModal);
-    closeEls.forEach((el) => el.addEventListener("click", closeVideoModal));
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && videoModal.classList.contains("open")) closeVideoModal();
-    });
+  const footerWaveformEl = document.getElementById("footerWaveform");
+  if (footerWaveformEl) {
+    const bars = 64;
+    let html = "";
+    for (let i = 0; i < bars; i++) {
+      const h = Math.round(15 + Math.abs(Math.sin(i * 0.6)) * 60 + Math.random() * 15);
+      html += `<span style="height:${Math.min(100, h)}%"></span>`;
+    }
+    footerWaveformEl.innerHTML = html;
+  }
+
+  /* ============================================================
+     PAGE SCRUBBER — scroll position mapped to a timeline bar
+     ============================================================ */
+  const scrubberFill = document.getElementById("scrubberFill");
+  const scrubberHead = document.getElementById("scrubberHead");
+  if (scrubberFill && scrubberHead) {
+    function updateScrubber() {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = max > 0 ? (window.scrollY / max) * 100 : 0;
+      scrubberFill.style.width = pct + "%";
+      scrubberHead.style.left = pct + "%";
+    }
+    updateScrubber();
+    window.addEventListener("scroll", updateScrubber, { passive: true });
+    window.addEventListener("resize", updateScrubber);
   }
 
 })();

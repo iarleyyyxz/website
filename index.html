@@ -26,11 +26,27 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+<!-- ambient background glow — sits behind every section -->
+<div class="ambient-glow" aria-hidden="true">
+  <span class="ambient-glow__blob ambient-glow__blob--1"></span>
+  <span class="ambient-glow__blob ambient-glow__blob--2"></span>
+  <span class="ambient-glow__blob ambient-glow__blob--3"></span>
+  <span class="ambient-glow__blob ambient-glow__blob--4"></span>
+  <span class="ambient-glow__grid"></span>
+</div>
+
+
+<!-- page scrubber: scroll position as an editing timeline -->
+<div class="scrubber" aria-hidden="true">
+  <div class="scrubber__fill" id="scrubberFill"></div>
+  <div class="scrubber__head" id="scrubberHead"></div>
+</div>
 
 <!-- ================= BOOT SEQUENCE ================= -->
 <div class="boot-screen" id="bootScreen">
@@ -56,7 +72,7 @@
     <nav class="nav" id="mainNav">
       <a href="#home" class="nav__link">Home</a>
       <a href="#tools" class="nav__link">Tools</a>
-      <a href="#changelog" class="nav__link">About Me</a>
+      <a href="#changelog" class="nav__link">About</a>
       <a href="#work" class="nav__link">Work</a>
       <a href="#contact" class="nav__link nav__link--cta">Contact</a>
     </nav>
@@ -90,26 +106,25 @@
       <div class="hero__rain-scrim"></div>
     </div>
 
-    <div class="term-window reveal">
-      <div class="term-window__bar">
-        <span class="term-window__path">editor@reel: ~</span>
-        <div class="term-window__controls">
-          <span class="term-window__btn" title="Minimize">—</span>
-          <span class="term-window__btn" title="Maximize">▢</span>
-          <span class="term-window__btn term-window__btn--close" title="Close">×</span>
-        </div>
-      </div>
+    <div class="nle reveal">
 
-      <div class="term-window__body hero__inner">
+      <div class="nle__menubar">
+        <span class="nle__brand"><span class="nle__brand-mark">◆</span>reel.editor</span>
+        <div class="nle__menu" aria-hidden="true">
+          <span>File</span><span>Edit</span><span>Clip</span><span>Timeline</span><span>Window</span>
+        </div>
         <div class="hero__status">
           <span class="rec-dot"></span>
           <span>OPEN FOR NEW PROJECTS</span>
           <span class="timecode" id="timecode">00:00:00:00</span>
         </div>
+      </div>
 
+      <div class="nle__viewer hero__inner">
         <p class="eyebrow">Video Editor</p>
 
         <h1 class="hero__title">
+          <span class="nle__script">Crafted by</span>
           Iarley<br>
           <span class="hero__title--accent">Prod</span>
         </h1>
@@ -121,9 +136,39 @@
         </p>
 
         <div class="hero__actions">
+          <a href="#contact" class="btn btn--primary">Let's talk</a>
           <a href="#work" class="btn btn--ghost">See my work</a>
         </div>
       </div>
+
+      <div class="nle__timeline" aria-hidden="true">
+        <div class="nle__ruler">
+          <span>00:00</span><span>00:05</span><span>00:10</span><span>00:15</span><span>00:20</span><span>00:25</span>
+          <div class="nle__playhead"></div>
+        </div>
+
+        <div class="nle__track">
+          <span class="nle__track-label">V1</span>
+          <div class="nle__clip" style="width:20%">
+            <span class="nle__kf"></span><span class="nle__kf"></span><span class="nle__kf"></span>
+          </div>
+          <div class="nle__clip nle__clip--alt" style="width:32%">
+            <span class="nle__kf"></span><span class="nle__kf"></span>
+          </div>
+          <div class="nle__clip" style="width:14%">
+            <span class="nle__kf"></span>
+          </div>
+          <div class="nle__clip nle__clip--alt" style="width:24%">
+            <span class="nle__kf"></span><span class="nle__kf"></span><span class="nle__kf"></span>
+          </div>
+        </div>
+
+        <div class="nle__track nle__track--audio">
+          <span class="nle__track-label">A1</span>
+          <div class="nle__waveform" id="nleWaveform"></div>
+        </div>
+      </div>
+
     </div>
 
     <a href="#tools" class="scroll-cue" aria-label="Scroll down">
@@ -132,10 +177,29 @@
     </a>
   </section>
 
+  <!-- ================= TECH TICKER ================= -->
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker__track">
+      <span>● REC</span><span>3840×2160</span><span>23.976 FPS</span><span>H.264</span><span>-14 LUFS</span><span>◆ KEYFRAME</span><span>TIMELINE 01</span><span>EXPORTING…</span>
+      <span>● REC</span><span>3840×2160</span><span>23.976 FPS</span><span>H.264</span><span>-14 LUFS</span><span>◆ KEYFRAME</span><span>TIMELINE 01</span><span>EXPORTING…</span>
+    </div>
+  </div>
+
   <!-- ================= TOOLS (timeline marquee) ================= -->
   <section class="tools" id="tools">
+    <div class="tools__glow" aria-hidden="true"></div>
+    <span class="section-watermark" aria-hidden="true">EDIT</span>
+
+    <span class="float-icon float-icon--a" style="width:64px;height:64px;top:12%;right:14%;" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="9" width="18" height="12" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M3 9l2-5h4l-2 5M9 9l2-5h4l-2 5M15 9l2-5h3l-1 5" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+    </span>
+    <span class="float-icon float-icon--b" style="width:44px;height:44px;bottom:10%;left:6%;" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none"><circle cx="6" cy="6" r="2.4" stroke="currentColor" stroke-width="1.5"/><circle cx="6" cy="18" r="2.4" stroke="currentColor" stroke-width="1.5"/><path d="M8 7.5L20 19M8 16.5L20 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </span>
+
     <div class="section-head reveal">
       <p class="eyebrow">Software</p>
+      <span class="script-accent">The toolkit</span>
       <h2 class="section-title">What I edit with</h2>
       <p class="section-lead">Pr for the cut, Ae when it needs to move, Ps when a thumbnail has to stop someone mid-scroll.</p>
     </div>
@@ -148,6 +212,7 @@
       <div class="marquee__track" id="marqueeTrack">
         <!-- duplicated via JS for a seamless loop -->
         <div class="clip clip--pr">
+          <span class="clip__kf"></span>
           <span class="clip__badge">Pr</span>
           <div class="clip__info">
             <strong>Premiere Pro</strong>
@@ -155,6 +220,7 @@
           </div>
         </div>
         <div class="clip clip--ae">
+          <span class="clip__kf"></span>
           <span class="clip__badge">Ae</span>
           <div class="clip__info">
             <strong>After Effects</strong>
@@ -162,6 +228,7 @@
           </div>
         </div>
         <div class="clip clip--ps">
+          <span class="clip__kf"></span>
           <span class="clip__badge">Ps</span>
           <div class="clip__info">
             <strong>Photoshop</strong>
@@ -173,84 +240,173 @@
   </section>
 
   <!-- ================= ABOUT ================= -->
-  <section class="changelog about" id="changelog">
-    <div class="about__inner">
-      <div class="section-head reveal">
-        <p class="eyebrow">About Me</p>
-        <h2 class="section-title">The editor behind the timeline</h2>
-        <p class="section-lead">I edit YouTube videos with a focus on pacing, timing and making the footage feel natural.</p>
+  <section class="changelog" id="changelog">
+    <div class="changelog__glow" aria-hidden="true"></div>
+    <span class="section-watermark" aria-hidden="true">ABOUT</span>
+
+    <span class="float-icon float-icon--b" style="width:56px;height:56px;top:14%;right:10%;" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.3"/><circle cx="12" cy="12" r="3.2" stroke="currentColor" stroke-width="1.3"/><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8" stroke="currentColor" stroke-width="1"/></svg>
+    </span>
+    <span class="float-icon float-icon--c" style="width:46px;height:46px;bottom:8%;right:22%;" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.3"/><circle cx="12" cy="12" r="2" stroke="currentColor" stroke-width="1.3"/><circle cx="12" cy="6" r="1.5" stroke="currentColor" stroke-width="1.1"/><circle cx="17" cy="10" r="1.5" stroke="currentColor" stroke-width="1.1"/><circle cx="15" cy="16.5" r="1.5" stroke="currentColor" stroke-width="1.1"/><circle cx="9" cy="16.5" r="1.5" stroke="currentColor" stroke-width="1.1"/><circle cx="7" cy="10" r="1.5" stroke="currentColor" stroke-width="1.1"/></svg>
+    </span>
+
+    <div class="section-head reveal">
+      <p class="eyebrow">About</p>
+      <span class="script-accent">A little about me</span>
+      <h2 class="section-title">cat about.md</h2>
+    </div>
+
+    <div class="about__wrap reveal">
+      <div class="mask-demo" aria-hidden="true">
+        <div class="mask-demo__base"></div>
+        <div class="mask-demo__reveal"></div>
+        <svg class="mask-demo__character" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
+          <circle cx="50" cy="34" r="12"/>
+          <path d="M28,96 C28,70 34,57 50,57 C66,57 72,70 72,96 Z"/>
+        </svg>
+        <svg class="mask-demo__outline" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <path d="M30,10 L70,5 L90,35 L85,70 L55,95 L20,85 L5,55 L15,25 Z"/>
+        </svg>
+        <div class="mask-demo__kfrow">
+          <span class="mask-demo__kf"></span>
+          <span class="mask-demo__kf"></span>
+          <span class="mask-demo__kf"></span>
+        </div>
       </div>
 
-      <div class="about__grid">
-        <div class="about__copy reveal">
-          <p class="about__lead">I'm a freelance video editor mainly working with YouTube content. I like edits that move well, keep things clear and still feel like the creator behind them.</p>
-          <p>I spend a lot of time on pacing, sound design, small visual details and making sure each cut actually has a reason to be there.</p>
-          <p>The goal is pretty simple: make the video more enjoyable to watch without taking away what makes the creator's content their own.</p>
-        </div>
+      <div class="about__content">
+        <p class="about__meta">◆ 00:00:12:04 — profile.clip</p>
+        <p class="about__lead">Freelance video editor crafting engaging, fast-paced content for YouTube.</p>
+        <p class="about__text">My focus is on clean storytelling, smooth pacing, sound design, and keeping viewers engaged throughout the video — every cut earns its place, or it doesn't make it in.</p>
 
-        <div class="about__terminal reveal">
-          <div class="about__terminal-head"><span>editor@reel</span><span>about.md</span></div>
-          <div class="about__terminal-body">
-            <div><span class="about__prompt">$</span> specialty</div>
-            <strong>YouTube &amp; creator-focused edits</strong>
-            <div><span class="about__prompt">$</span> strengths</div>
-            <strong>Pacing · Sound Design · Motion · Storytelling</strong>
-            <div><span class="about__prompt">$</span> workflow</div>
-            <strong>Premiere Pro · After Effects · Photoshop</strong>
-          </div>
+        <div class="about__tags">
+          <span class="about__tag">Storytelling</span>
+          <span class="about__tag">Fast pacing</span>
+          <span class="about__tag">Sound design</span>
+          <span class="about__tag">Retention-focused</span>
         </div>
+      </div>
+
+      <div class="sound-demo" aria-hidden="true">
+        <div class="sound-demo__bars">
+          <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <svg class="sound-demo__wave" viewBox="0 0 100 20" preserveAspectRatio="none">
+          <path d="M0,10 Q6,2 12,10 T24,10 T36,10 T48,10 T60,10 T72,10 T84,10 T100,10" />
+        </svg>
       </div>
     </div>
   </section>
 
-  <!-- ================= WORK ================= -->
+  <!-- ================= WORK (featured video showcase) ================= -->
   <section class="work" id="work">
     <div class="work__glow" aria-hidden="true"></div>
+    <span class="section-watermark" aria-hidden="true">REEL</span>
+
+    <span class="float-icon float-icon--a" style="width:50px;height:50px;top:8%;left:8%;" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M12 3v12M7 10l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 19h16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+    </span>
 
     <div class="section-head reveal">
-      <p class="eyebrow">Selected Work</p>
-      <h2 class="section-title">Cuts built to be watched</h2>
-      <p class="section-lead">A selection of edits showcasing pacing, storytelling, motion and visual polish across different types of YouTube content.</p>
+      <p class="eyebrow">Showreel</p>
+      <span class="script-accent">Recent selects</span>
+      <h2 class="section-title">Recent edits</h2>
+      <p class="section-lead">A few cuts that shipped recently — more get added as projects wrap.</p>
     </div>
 
-    <div class="video-grid video-grid--expanded reveal">
-      <div class="video-card video-card--filled" data-video-id="video-01">
-        <div class="video-card__frame"><iframe src="https://www.youtube-nocookie.com/embed/DRIFpDfwA9k" title="Video 01" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+    <div class="showroom reveal">
+
+      <div class="showroom__viewer">
+        <span class="showroom__corner showroom__corner--tl" aria-hidden="true"></span>
+        <span class="showroom__corner showroom__corner--tr" aria-hidden="true"></span>
+        <span class="showroom__corner showroom__corner--bl" aria-hidden="true"></span>
+        <span class="showroom__corner showroom__corner--br" aria-hidden="true"></span>
+
+        <div class="showroom__frame">
+          <iframe
+            id="showroomFrame"
+            src="https://www.youtube-nocookie.com/embed/DRIFpDfwA9k"
+            title="Featured cut"
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen>
+          </iframe>
+        </div>
+
+        <div class="showroom__bar">
+          <span class="showroom__rec"><span class="rec-dot"></span>PLAYING</span>
+          <span class="showroom__title" id="showroomTitle">Featured cut</span>
+          <span class="showroom__count"><span id="showroomPos">01</span> / <span id="showroomTotal">07</span></span>
+        </div>
       </div>
 
-      <div class="video-card video-card--filled" data-video-id="video-02">
-        <div class="video-card__frame"><iframe src="https://www.youtube-nocookie.com/embed/iArBNx0_SVw" title="Video 02" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
-      </div>
+      <div class="showroom__strip" id="showroomStrip">
 
-      <div class="video-card video-card--filled" data-video-id="video-03">
-        <div class="video-card__frame"><iframe src="https://www.youtube-nocookie.com/embed/TzDF9J_hOm8" title="Video 03" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
-      </div>
+        <button type="button" class="filmclip is-active" data-id="DRIFpDfwA9k" data-title="Featured cut">
+          <img src="https://img.youtube.com/vi/DRIFpDfwA9k/mqdefault.jpg" alt="" loading="lazy">
+          <span class="filmclip__kf"></span>
+          <span class="filmclip__label">01</span>
+        </button>
 
-      <div class="video-card video-card--filled" data-video-id="video-04">
-        <div class="video-card__frame"><iframe src="https://www.youtube-nocookie.com/embed/_G4I8Jvd3jU" title="Video 04" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
-      </div>
+        <button type="button" class="filmclip" data-id="1wDBGx-JlHs" data-title="Video 02">
+          <img src="https://img.youtube.com/vi/1wDBGx-JlHs/mqdefault.jpg" alt="" loading="lazy">
+          <span class="filmclip__kf"></span>
+          <span class="filmclip__label">02</span>
+        </button>
 
-      <div class="video-card video-card--filled" data-video-id="video-05">
-        <div class="video-card__frame"><iframe src="https://www.youtube-nocookie.com/embed/1wDBGx-JlHs" title="Video 05" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
-      </div>
+        <button type="button" class="filmclip" data-id="_G4I8Jvd3jU" data-title="Video 03">
+          <img src="https://img.youtube.com/vi/_G4I8Jvd3jU/mqdefault.jpg" alt="" loading="lazy">
+          <span class="filmclip__kf"></span>
+          <span class="filmclip__label">03</span>
+        </button>
 
-      <div class="video-card video-card--filled" data-video-id="video-06">
-        <div class="video-card__frame"><iframe src="https://www.youtube-nocookie.com/embed/nactHjNF55A" title="Video 06" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+        <button type="button" class="filmclip" data-id="IBMN3OUJm9g" data-title="Video 04">
+          <img src="https://img.youtube.com/vi/IBMN3OUJm9g/mqdefault.jpg" alt="" loading="lazy">
+          <span class="filmclip__kf"></span>
+          <span class="filmclip__label">04</span>
+        </button>
+
+        <button type="button" class="filmclip" data-id="iArBNx0_SVw" data-title="Video 05">
+          <img src="https://img.youtube.com/vi/iArBNx0_SVw/mqdefault.jpg" alt="" loading="lazy">
+          <span class="filmclip__kf"></span>
+          <span class="filmclip__label">05</span>
+        </button>
+
+        <button type="button" class="filmclip" data-id="TzDF9J_hOm8" data-title="Video 06">
+          <img src="https://img.youtube.com/vi/TzDF9J_hOm8/mqdefault.jpg" alt="" loading="lazy">
+          <span class="filmclip__kf"></span>
+          <span class="filmclip__label">06</span>
+        </button>
+
+        <button type="button" class="filmclip" data-id="nactHjNF55A" data-title="Video 07">
+          <img src="https://img.youtube.com/vi/nactHjNF55A/mqdefault.jpg" alt="" loading="lazy">
+          <span class="filmclip__kf"></span>
+          <span class="filmclip__label">07</span>
+        </button>
+
       </div>
     </div>
 
-    <div class="work__actions" aria-label="Project actions">
-      <button type="button" class="work__all-videos" id="openVideoModal" aria-haspopup="dialog" aria-controls="videoModal">
-        <span class="work__all-videos-prompt">$</span> all videos <span class="work__all-videos-arrow">→</span>
-      </button>
-      <a href="#contact" class="work__start-project">Start Project <span aria-hidden="true">→</span></a>
-    </div>
+    <p class="work__note reveal">
+      <svg viewBox="0 0 24 24" fill="none" class="work__note-icon"><path d="M3 10l1.5-5.5L18 8l-1.5 5.5L3 10z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><rect x="3" y="10" width="18" height="9" rx="1" stroke="currentColor" stroke-width="1.5"/></svg>
+      Got footage that needs this treatment?
+      <a href="#contact" class="work__note-link">Get in touch</a>
+    </p>
   </section>
 
   <!-- ================= CONTACT ================= -->
   <section class="contact" id="contact">
+    <div class="contact__glow" aria-hidden="true"></div>
+    <span class="section-watermark" aria-hidden="true">TALK</span>
+
+    <span class="float-icon float-icon--b" style="width:48px;height:48px;top:16%;left:12%;" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M21 3L3 10.5l7 2.5m11-10L13 21l-3-8" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+    </span>
+
     <div class="contact__inner reveal">
       <p class="eyebrow">Contact</p>
+      <span class="script-accent">Let's make something</span>
       <h2 class="section-title">Got footage that needs a story?</h2>
       <p class="section-lead">Send the files, the deadline, and anything you really don't want cut. I'll take it from there.</p>
 
@@ -272,7 +428,6 @@
       </div>
     </div>
   </section>
-
 
 
 </main>
@@ -305,6 +460,7 @@
 </div>
 
 <footer class="footer">
+  <div class="footer__waveform" id="footerWaveform" aria-hidden="true"></div>
   <div class="neofetch">
     <div class="neofetch__logo" aria-hidden="true">
       <img src="assets/avatar.png" alt="" loading="lazy">
@@ -320,75 +476,6 @@
   </div>
   <p class="footer__copy">© <span id="year"></span> — Video Editor. Cut frame by frame.</p>
 </footer>
-
-
-<!-- ================= ALL VIDEOS MODAL ================= -->
-<div class="video-modal" id="videoModal" aria-hidden="true">
-  <div class="video-modal__backdrop" data-close-modal></div>
-  <div class="video-modal__panel" role="dialog" aria-modal="true" aria-labelledby="videoModalTitle">
-    <div class="video-modal__head">
-      <span class="video-modal__title" id="videoModalTitle">$ ls -la videos/</span>
-      <button type="button" class="video-modal__close" data-close-modal aria-label="Close all videos">
-        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-      </button>
-    </div>
-
-    <div class="video-modal__grid">
-      <div class="video-card video-card--filled">
-        <div class="video-card__frame"><iframe src="https://www.youtube-nocookie.com/embed/DRIFpDfwA9k" title="Video 01" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
-      </div>
-      <div class="video-card video-card--filled">
-        <div class="video-card__frame"><iframe src="https://www.youtube-nocookie.com/embed/iArBNx0_SVw" title="Video 02" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
-      </div>
-      <div class="video-card video-card--filled">
-        <div class="video-card__frame"><iframe src="https://www.youtube-nocookie.com/embed/TzDF9J_hOm8" title="Video 03" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
-      </div>
-      <div class="video-card video-card--filled">
-        <div class="video-card__frame"><iframe src="https://www.youtube-nocookie.com/embed/_G4I8Jvd3jU" title="Video 04" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
-      </div>
-      <div class="video-card video-card--filled">
-        <div class="video-card__frame"><iframe src="https://www.youtube-nocookie.com/embed/1wDBGx-JlHs" title="Video 05" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
-      </div>
-      <div class="video-card video-card--filled">
-        <div class="video-card__frame"><iframe src="https://www.youtube-nocookie.com/embed/nactHjNF55A" title="Video 06" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
-      </div>
-      <div class="video-card video-card--filled">
-        <div class="video-card__frame"><iframe src="https://www.youtube-nocookie.com/embed/NmHEMBcHlx0" title="Video 07" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script>
-(function () {
-  const modal = document.getElementById('videoModal');
-  const openButton = document.getElementById('openVideoModal');
-  if (!modal || !openButton) return;
-
-  const closeButtons = modal.querySelectorAll('[data-close-modal]');
-
-  function openModal() {
-    modal.classList.add('open');
-    modal.setAttribute('aria-hidden', 'false');
-    document.body.classList.add('modal-open');
-    const closeButton = modal.querySelector('.video-modal__close');
-    if (closeButton) closeButton.focus();
-  }
-
-  function closeModal() {
-    modal.classList.remove('open');
-    modal.setAttribute('aria-hidden', 'true');
-    document.body.classList.remove('modal-open');
-    openButton.focus();
-  }
-
-  openButton.addEventListener('click', openModal);
-  closeButtons.forEach((button) => button.addEventListener('click', closeModal));
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && modal.classList.contains('open')) closeModal();
-  });
-})();
-</script>
 
 <script src="script.js"></script>
 </body>
