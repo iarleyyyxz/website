@@ -90,7 +90,7 @@
     document.addEventListener("mouseleave", () => ring.classList.remove("is-visible"));
     document.addEventListener("mouseenter", () => ring.classList.add("is-visible"));
 
-    const interactiveSelectors = "a, button, .clip, .track, .filmclip, .term-window__btn, .os-panel__ws";
+    const interactiveSelectors = "a, button, .clip, .track, .filmclip, .showroom__tab, .term-window__btn, .os-panel__ws";
     document.addEventListener("mouseover", (e) => {
       if (e.target.closest(interactiveSelectors)) ring.classList.add("is-active");
     });
@@ -293,30 +293,64 @@
   }
 
   /* ============================================================
-     SHOWROOM — filmstrip swaps the big viewer
+     SHOWROOM — tabs (long forms / shorts) + filmstrip swaps the viewer
      ============================================================ */
   const showroomFrame = document.getElementById("showroomFrame");
   const showroomTitle = document.getElementById("showroomTitle");
   const showroomPos = document.getElementById("showroomPos");
-  const showroomStrip = document.getElementById("showroomStrip");
+  const showroomTotal = document.getElementById("showroomTotal");
+  const showroomViewer = document.getElementById("showroomViewer");
+  const stripLong = document.getElementById("showroomStripLong");
+  const stripShorts = document.getElementById("showroomStripShorts");
+  const tabs = Array.from(document.querySelectorAll(".showroom__tab"));
 
-  if (showroomFrame && showroomStrip) {
-    const clips = Array.from(showroomStrip.querySelectorAll(".filmclip"));
+  const strips = { long: stripLong, shorts: stripShorts };
 
+  function wireStrip(strip) {
+    if (!strip) return;
+    const clips = Array.from(strip.querySelectorAll(".filmclip"));
     clips.forEach((clip, i) => {
       clip.addEventListener("click", () => {
         const id = clip.dataset.id;
         const title = clip.dataset.title;
+        const vertical = clip.dataset.vertical === "true";
 
         showroomFrame.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1`;
         if (showroomTitle) showroomTitle.textContent = title;
         if (showroomPos) showroomPos.textContent = String(i + 1).padStart(2, "0");
+        if (showroomTotal) showroomTotal.textContent = String(clips.length).padStart(2, "0");
+        if (showroomViewer) showroomViewer.classList.toggle("showroom__viewer--vertical", vertical);
 
         clips.forEach((c) => c.classList.toggle("is-active", c === clip));
         clip.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
       });
     });
   }
+
+  wireStrip(stripLong);
+  wireStrip(stripShorts);
+
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", () => {
+      const group = tab.dataset.group;
+      if (tab.classList.contains("is-active")) return;
+
+      tabs.forEach((t) => {
+        t.classList.toggle("is-active", t === tab);
+        t.setAttribute("aria-selected", String(t === tab));
+      });
+
+      Object.entries(strips).forEach(([key, strip]) => {
+        if (!strip) return;
+        strip.hidden = key !== group;
+        strip.classList.toggle("is-active", key === group);
+      });
+
+      const activeStrip = strips[group];
+      const firstClip = activeStrip && activeStrip.querySelector(".filmclip");
+      if (firstClip) firstClip.click();
+    });
+  });
 
   /* ============================================================
      NLE WAVEFORM — random-ish audio bars in the hero timeline

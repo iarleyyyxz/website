@@ -317,7 +317,18 @@
 
     <div class="showroom reveal">
 
-      <div class="showroom__viewer">
+      <div class="showroom__tabs" role="tablist" aria-label="Video format">
+        <button type="button" class="showroom__tab is-active" data-group="long" role="tab" aria-selected="true">
+          <svg viewBox="0 0 24 24" fill="none"><rect x="2" y="6" width="20" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M10 9l5 3-5 3V9z" fill="currentColor"/></svg>
+          Long forms
+        </button>
+        <button type="button" class="showroom__tab" data-group="shorts" role="tab" aria-selected="false">
+          <svg viewBox="0 0 24 24" fill="none"><rect x="6" y="2" width="12" height="20" rx="2.5" stroke="currentColor" stroke-width="1.5"/><path d="M10 9l4.5 3-4.5 3V9z" fill="currentColor"/></svg>
+          Shorts
+        </button>
+      </div>
+
+      <div class="showroom__viewer" id="showroomViewer">
         <span class="showroom__corner showroom__corner--tl" aria-hidden="true"></span>
         <span class="showroom__corner showroom__corner--tr" aria-hidden="true"></span>
         <span class="showroom__corner showroom__corner--bl" aria-hidden="true"></span>
@@ -326,8 +337,8 @@
         <div class="showroom__frame">
           <iframe
             id="showroomFrame"
-            src="https://www.youtube-nocookie.com/embed/DRIFpDfwA9k"
-            title="Featured cut"
+            src="https://www.youtube-nocookie.com/embed/xkB_XB-XIIg"
+            title="Video 08"
             loading="lazy"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowfullscreen>
@@ -336,53 +347,69 @@
 
         <div class="showroom__bar">
           <span class="showroom__rec"><span class="rec-dot"></span>PLAYING</span>
-          <span class="showroom__title" id="showroomTitle">Featured cut</span>
-          <span class="showroom__count"><span id="showroomPos">01</span> / <span id="showroomTotal">07</span></span>
+          <span class="showroom__title" id="showroomTitle">Video 08</span>
+          <span class="showroom__count"><span id="showroomPos">01</span> / <span id="showroomTotal">08</span></span>
         </div>
       </div>
 
-      <div class="showroom__strip" id="showroomStrip">
+      <div class="showroom__strip is-active" id="showroomStripLong" data-group="long">
 
-        <button type="button" class="filmclip is-active" data-id="DRIFpDfwA9k" data-title="Featured cut">
-          <img src="https://img.youtube.com/vi/DRIFpDfwA9k/mqdefault.jpg" alt="" loading="lazy">
+        <button type="button" class="filmclip is-active" data-id="xkB_XB-XIIg" data-title="Video 08">
+          <img src="https://img.youtube.com/vi/xkB_XB-XIIg/mqdefault.jpg" alt="" loading="lazy">
           <span class="filmclip__kf"></span>
           <span class="filmclip__label">01</span>
+        </button>
+
+        <button type="button" class="filmclip" data-id="DRIFpDfwA9k" data-title="Featured cut">
+          <img src="https://img.youtube.com/vi/DRIFpDfwA9k/mqdefault.jpg" alt="" loading="lazy">
+          <span class="filmclip__kf"></span>
+          <span class="filmclip__label">02</span>
         </button>
 
         <button type="button" class="filmclip" data-id="1wDBGx-JlHs" data-title="Video 02">
           <img src="https://img.youtube.com/vi/1wDBGx-JlHs/mqdefault.jpg" alt="" loading="lazy">
           <span class="filmclip__kf"></span>
-          <span class="filmclip__label">02</span>
+          <span class="filmclip__label">03</span>
         </button>
 
         <button type="button" class="filmclip" data-id="_G4I8Jvd3jU" data-title="Video 03">
           <img src="https://img.youtube.com/vi/_G4I8Jvd3jU/mqdefault.jpg" alt="" loading="lazy">
           <span class="filmclip__kf"></span>
-          <span class="filmclip__label">03</span>
+          <span class="filmclip__label">04</span>
         </button>
 
-        <button type="button" class="filmclip" data-id="IBMN3OUJm9g" data-title="Video 04">
-          <img src="https://img.youtube.com/vi/IBMN3OUJm9g/mqdefault.jpg" alt="" loading="lazy">
+        <button type="button" class="filmclip" data-id="NmHEMBcHlx0" data-title="Video 04">
+          <img src="https://img.youtube.com/vi/NmHEMBcHlx0/mqdefault.jpg" alt="" loading="lazy">
           <span class="filmclip__kf"></span>
-          <span class="filmclip__label">04</span>
+          <span class="filmclip__label">05</span>
         </button>
 
         <button type="button" class="filmclip" data-id="iArBNx0_SVw" data-title="Video 05">
           <img src="https://img.youtube.com/vi/iArBNx0_SVw/mqdefault.jpg" alt="" loading="lazy">
           <span class="filmclip__kf"></span>
-          <span class="filmclip__label">05</span>
+          <span class="filmclip__label">06</span>
         </button>
 
         <button type="button" class="filmclip" data-id="TzDF9J_hOm8" data-title="Video 06">
           <img src="https://img.youtube.com/vi/TzDF9J_hOm8/mqdefault.jpg" alt="" loading="lazy">
           <span class="filmclip__kf"></span>
-          <span class="filmclip__label">06</span>
+          <span class="filmclip__label">07</span>
         </button>
 
         <button type="button" class="filmclip" data-id="nactHjNF55A" data-title="Video 07">
           <img src="https://img.youtube.com/vi/nactHjNF55A/mqdefault.jpg" alt="" loading="lazy">
           <span class="filmclip__kf"></span>
-          <span class="filmclip__label">07</span>
+          <span class="filmclip__label">08</span>
+        </button>
+
+      </div>
+
+      <div class="showroom__strip showroom__strip--shorts" id="showroomStripShorts" data-group="shorts" hidden>
+
+        <button type="button" class="filmclip filmclip--vertical" data-id="p-lLAU-Nl4U" data-title="Short 01" data-vertical="true">
+          <img src="https://img.youtube.com/vi/p-lLAU-Nl4U/mqdefault.jpg" alt="" loading="lazy">
+          <span class="filmclip__kf"></span>
+          <span class="filmclip__label">01</span>
         </button>
 
       </div>
