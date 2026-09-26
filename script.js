@@ -1,397 +1,147 @@
 (() => {
   "use strict";
 
-  const isCoarsePointer = window.matchMedia("(hover: none), (pointer: coarse)").matches;
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  /* ============================================================
-     BOOT SEQUENCE — plays once per session, skippable
-     ============================================================ */
-  const bootScreen = document.getElementById("bootScreen");
-  const bootLog = document.getElementById("bootLog");
-  const bootSkip = document.getElementById("bootSkip");
-
-  if (bootScreen) {
-    const alreadyBooted = sessionStorage.getItem("editorBooted");
-
-    if (alreadyBooted || prefersReducedMotion) {
-      bootScreen.remove();
-    } else {
-      const lines = [
-        ["ok",   "Starting kernel modules: cut.ko color.ko sound.ko"],
-        ["ok",   "Mounting /dev/footage on /mnt/raw"],
-        ["ok",   "Starting premiere-pro.service"],
-        ["ok",   "Starting after-effects.service"],
-        ["ok",   "Starting photoshop.service"],
-        ["ok",   "Checking timeline integrity ... 0 conflicts found"],
-        ["ok",   "Loading color profiles (rec709, teal-orange.lut)"],
-        ["ok",   "Starting audio-mixer.service"],
-        ["warn", "3 raw clips still unedited — ignoring for now"],
-        ["ok",   "Rendering preview ... done"],
-        ["ok",   "Reached target Portfolio"],
-        ["dim",  ""],
-        ["dim",  "editor login: guest"],
-        ["dim",  "Password: ********"],
-        ["dim",  "Welcome. Last login just now from your browser."],
-        ["dim",  "$ ./launch-site.sh"],
-      ];
-
-      document.body.style.overflow = "hidden";
-
-      let i = 0;
-      const tags = { ok: "[ OK ] ", warn: "[WARN] ", dim: "" };
-      const classes = { ok: "boot-screen__ok", warn: "boot-screen__warn", dim: "boot-screen__dim" };
-
-      function finishBoot() {
-        bootScreen.classList.add("is-done");
-        document.body.style.overflow = "";
-        sessionStorage.setItem("editorBooted", "1");
-        setTimeout(() => bootScreen.remove(), 550);
-      }
-
-      function printLine() {
-        if (i >= lines.length) {
-          setTimeout(finishBoot, 420);
-          return;
-        }
-        const [type, text] = lines[i];
-        const row = document.createElement("div");
-        const tag = tags[type] || "";
-        row.innerHTML = tag
-          ? `<span class="${classes[type]}">${tag}</span>${text}`
-          : `<span class="${classes[type]}">${text}</span>`;
-        bootLog.appendChild(row);
-        bootLog.scrollTop = bootLog.scrollHeight;
-        i++;
-        setTimeout(printLine, 90 + Math.random() * 90);
-      }
-      setTimeout(printLine, 250);
-
-      bootSkip.addEventListener("click", finishBoot);
-    }
+  // Soft cursor light: atmospheric only, never a distracting custom cursor.
+  const mouseGlow = document.getElementById("mouseGlow");
+  if (mouseGlow && !prefersReducedMotion && window.matchMedia("(pointer:fine)").matches) {
+    let gx = innerWidth / 2, gy = innerHeight / 2, tx = gx, ty = gy;
+    window.addEventListener("mousemove", e => { tx = e.clientX; ty = e.clientY; }, {passive:true});
+    const moveGlow = () => {
+      gx += (tx - gx) * 0.12;
+      gy += (ty - gy) * 0.12;
+      mouseGlow.style.transform = `translate(${gx}px, ${gy}px) translate(-50%, -50%)`;
+      requestAnimationFrame(moveGlow);
+    };
+    moveGlow();
   }
 
-  /* ============================================================
-     CUSTOM CURSOR — transparent ring, white outline
-     ============================================================ */
-  if (!isCoarsePointer) {
-    const ring = document.getElementById("cursorRing");
-    let mouseX = window.innerWidth / 2;
-    let mouseY = window.innerHeight / 2;
-    let ringX = mouseX;
-    let ringY = mouseY;
-
-    window.addEventListener("mousemove", (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      ring.classList.add("is-visible");
-    });
-
-    document.addEventListener("mouseleave", () => ring.classList.remove("is-visible"));
-    document.addEventListener("mouseenter", () => ring.classList.add("is-visible"));
-
-    const interactiveSelectors = "a, button, .clip, .track, .filmclip, .showroom__tab, .term-window__btn, .os-panel__ws";
-    document.addEventListener("mouseover", (e) => {
-      if (e.target.closest(interactiveSelectors)) ring.classList.add("is-active");
-    });
-    document.addEventListener("mouseout", (e) => {
-      if (e.target.closest(interactiveSelectors)) ring.classList.remove("is-active");
-    });
-
-    function loop() {
-      // smooth easing (lerp) for a slight trailing motion
-      ringX += (mouseX - ringX) * 0.18;
-      ringY += (mouseY - ringY) * 0.18;
-      ring.style.transform = `translate(${ringX}px, ${ringY}px) translate(-50%, -50%)`;
-      requestAnimationFrame(loop);
-    }
-    requestAnimationFrame(loop);
-  }
-
-  /* ============================================================
-     HEADER — background on scroll
-     ============================================================ */
-  const header = document.getElementById("header");
-  const onScroll = () => {
-    header.classList.toggle("is-scrolled", window.scrollY > 24);
-  };
-  document.addEventListener("scroll", onScroll, { passive: true });
-  onScroll();
-
-  /* ============================================================
-     MOBILE MENU
-     ============================================================ */
-  const navToggle = document.getElementById("navToggle");
-  const mainNav = document.getElementById("mainNav");
-  navToggle.addEventListener("click", () => {
-    const isOpen = mainNav.classList.toggle("is-open");
-    navToggle.setAttribute("aria-expanded", String(isOpen));
-  });
-  mainNav.querySelectorAll("a").forEach((link) => {
-    link.addEventListener("click", () => {
-      mainNav.classList.remove("is-open");
-      navToggle.setAttribute("aria-expanded", "false");
-    });
-  });
-
-  /* ============================================================
-     TIMECODE — NLE-style counter (24fps)
-     ============================================================ */
-  const timecodeEl = document.getElementById("timecode");
-  if (timecodeEl && !prefersReducedMotion) {
+  // Timeline timecode — keeps the editor aesthetic without extra UI clutter.
+  const timecode = document.getElementById("timecode");
+  if (timecode && !prefersReducedMotion) {
     const FPS = 24;
     let frame = 0;
-    const pad = (n) => String(n).padStart(2, "0");
-
+    const pad = n => String(n).padStart(2, "0");
     setInterval(() => {
       frame++;
-      const totalSeconds = Math.floor(frame / FPS);
+      const total = Math.floor(frame / FPS);
       const f = frame % FPS;
-      const h = Math.floor(totalSeconds / 3600);
-      const m = Math.floor((totalSeconds % 3600) / 60);
-      const s = totalSeconds % 60;
-      timecodeEl.textContent = `${pad(h)}:${pad(m)}:${pad(s)}:${pad(f)}`;
+      const h = Math.floor(total / 3600);
+      const m = Math.floor((total % 3600) / 60);
+      const s = total % 60;
+      timecode.textContent = `${pad(h)}:${pad(m)}:${pad(s)}:${pad(f)}`;
     }, 1000 / FPS);
   }
 
-  /* ============================================================
-     MARQUEE — duplicate clips for a seamless loop
-     ============================================================ */
-  const marqueeTrack = document.getElementById("marqueeTrack");
-  if (marqueeTrack) {
-    marqueeTrack.innerHTML += marqueeTrack.innerHTML;
+  // Small audio waveform for the only decorative editing element: the timeline.
+  const waveform = document.getElementById("nleWaveform");
+  if (waveform) {
+    const heights = [25,45,72,38,84,58,31,66,92,44,70,54,28,76,48,86,35,61,94,43,68,30,78,51,89,42,64,35,74,46,83,57,29,69,91,47,62,36,80,52,72,40,88,31,67,49,77,43];
+    waveform.innerHTML = heights.map(h => `<span style="height:${h}%"></span>`).join("");
   }
 
-  /* ============================================================
-     SCROLL REVEAL
-     ============================================================ */
-  const revealEls = document.querySelectorAll(".reveal");
-  if ("IntersectionObserver" in window && !prefersReducedMotion) {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("in-view");
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.15, rootMargin: "0px 0px -60px 0px" }
-    );
-    revealEls.forEach((el) => observer.observe(el));
-  } else {
-    revealEls.forEach((el) => el.classList.add("in-view"));
-  }
+  // Portfolio video switching.
+  const frame = document.getElementById("showroomFrame");
+  const title = document.getElementById("showroomTitle");
+  const position = document.getElementById("showroomPos");
+  const total = document.getElementById("showroomTotal");
+  const clips = [...document.querySelectorAll(".filmclip")];
 
-  /* ============================================================
-     FOOTER YEAR
-     ============================================================ */
-  const yearEl = document.getElementById("year");
-  if (yearEl) yearEl.textContent = new Date().getFullYear();
-
-  /* ============================================================
-     OS TASKBAR — clock + active workspace
-     ============================================================ */
-  const osClock = document.getElementById("osClock");
-  if (osClock) {
-    const updateClock = () => {
-      const now = new Date();
-      const h = String(now.getHours()).padStart(2, "0");
-      const m = String(now.getMinutes()).padStart(2, "0");
-      osClock.textContent = `${h}:${m}`;
-    };
-    updateClock();
-    setInterval(updateClock, 15000);
-  }
-
-  const wsLinks = Array.from(document.querySelectorAll(".os-panel__ws"));
-  const wsSections = wsLinks
-    .map((link) => document.querySelector(link.getAttribute("href")))
-    .filter(Boolean);
-
-  if (wsLinks.length && "IntersectionObserver" in window) {
-    const wsObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const idx = wsSections.indexOf(entry.target);
-            wsLinks.forEach((l) => l.classList.remove("is-active"));
-            if (idx !== -1) wsLinks[idx].classList.add("is-active");
-          }
-        });
-      },
-      { threshold: 0.5 }
-    );
-    wsSections.forEach((section) => wsObserver.observe(section));
-  }
-  /* ============================================================
-     DISCORD — click to copy username
-     ============================================================ */
-  const copyBtn = document.querySelector(".social-link--copy");
-  if (copyBtn) {
-    const original = copyBtn.innerHTML;
-    const checkIcon = '<svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-
-    copyBtn.addEventListener("click", async () => {
-      const value = copyBtn.dataset.copy || "";
-      try {
-        await navigator.clipboard.writeText(value);
-      } catch (err) {
-        // clipboard API unavailable — fail silently, tooltip still shows the username
-      }
-      copyBtn.classList.add("is-copied");
-      copyBtn.innerHTML = checkIcon;
-      setTimeout(() => {
-        copyBtn.classList.remove("is-copied");
-        copyBtn.innerHTML = original;
-      }, 1600);
-    });
-  }
-
-  /* ============================================================
-     VIDEO LIKES — persisted per-browser via localStorage
-     ============================================================ */
-  const likeButtons = document.querySelectorAll(".video-card__like");
-  if (likeButtons.length) {
-    const STORE_KEY = "editorVideoLikes";
-    let likeStore = {};
-    try {
-      likeStore = JSON.parse(localStorage.getItem(STORE_KEY)) || {};
-    } catch (err) {
-      likeStore = {};
-    }
-
-    likeButtons.forEach((btn) => {
-      const card = btn.closest(".video-card");
-      const videoId = (card && card.dataset.videoId) || "video";
-      const countEl = btn.querySelector(".video-card__like-count");
-      const saved = likeStore[videoId] || { liked: false, count: 0 };
-
-      countEl.textContent = saved.count;
-      if (saved.liked) {
-        btn.classList.add("is-liked");
-        btn.setAttribute("aria-pressed", "true");
-      }
-
-      btn.addEventListener("click", () => {
-        const current = likeStore[videoId] || { liked: false, count: 0 };
-        current.liked = !current.liked;
-        current.count = Math.max(0, current.count + (current.liked ? 1 : -1));
-        likeStore[videoId] = current;
-
-        try {
-          localStorage.setItem(STORE_KEY, JSON.stringify(likeStore));
-        } catch (err) {
-          // storage unavailable (private mode, etc.) — like still updates visually this session
-        }
-
-        countEl.textContent = current.count;
-        btn.classList.toggle("is-liked", current.liked);
-        btn.setAttribute("aria-pressed", String(current.liked));
-      });
-    });
-  }
-
-  /* ============================================================
-     SHOWROOM — tabs (long forms / shorts) + filmstrip swaps the viewer
-     ============================================================ */
-  const showroomFrame = document.getElementById("showroomFrame");
-  const showroomTitle = document.getElementById("showroomTitle");
-  const showroomPos = document.getElementById("showroomPos");
-  const showroomTotal = document.getElementById("showroomTotal");
-  const showroomViewer = document.getElementById("showroomViewer");
-  const stripLong = document.getElementById("showroomStripLong");
-  const stripShorts = document.getElementById("showroomStripShorts");
-  const tabs = Array.from(document.querySelectorAll(".showroom__tab"));
-
-  const strips = { long: stripLong, shorts: stripShorts };
-
-  function wireStrip(strip) {
-    if (!strip) return;
-    const clips = Array.from(strip.querySelectorAll(".filmclip"));
-    clips.forEach((clip, i) => {
-      clip.addEventListener("click", () => {
-        const id = clip.dataset.id;
-        const title = clip.dataset.title;
-        const vertical = clip.dataset.vertical === "true";
-
-        showroomFrame.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1`;
-        if (showroomTitle) showroomTitle.textContent = title;
-        if (showroomPos) showroomPos.textContent = String(i + 1).padStart(2, "0");
-        if (showroomTotal) showroomTotal.textContent = String(clips.length).padStart(2, "0");
-        if (showroomViewer) showroomViewer.classList.toggle("showroom__viewer--vertical", vertical);
-
-        clips.forEach((c) => c.classList.toggle("is-active", c === clip));
-        clip.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
-      });
-    });
-  }
-
-  wireStrip(stripLong);
-  wireStrip(stripShorts);
-
-  tabs.forEach((tab) => {
-    tab.addEventListener("click", () => {
-      const group = tab.dataset.group;
-      if (tab.classList.contains("is-active")) return;
-
-      tabs.forEach((t) => {
-        t.classList.toggle("is-active", t === tab);
-        t.setAttribute("aria-selected", String(t === tab));
-      });
-
-      Object.entries(strips).forEach(([key, strip]) => {
-        if (!strip) return;
-        strip.hidden = key !== group;
-        strip.classList.toggle("is-active", key === group);
-      });
-
-      const activeStrip = strips[group];
-      const firstClip = activeStrip && activeStrip.querySelector(".filmclip");
-      if (firstClip) firstClip.click();
+  clips.forEach((clip, index) => {
+    clip.addEventListener("click", () => {
+      const id = clip.dataset.id;
+      frame.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1`;
+      title.textContent = clip.dataset.title || `Video ${String(index + 1).padStart(2, "0")}`;
+      position.textContent = String(index + 1).padStart(2, "0");
+      total.textContent = String(clips.length).padStart(2, "0");
+      clips.forEach(c => c.classList.toggle("is-active", c === clip));
     });
   });
 
-  /* ============================================================
-     NLE WAVEFORM — random-ish audio bars in the hero timeline
-     ============================================================ */
-  const waveformEl = document.getElementById("nleWaveform");
-  if (waveformEl) {
-    const bars = 56;
-    let html = "";
-    for (let i = 0; i < bars; i++) {
-      const h = Math.round(18 + Math.abs(Math.sin(i * 0.45)) * 55 + Math.random() * 20);
-      html += `<span style="height:${Math.min(100, h)}%"></span>`;
-    }
-    waveformEl.innerHTML = html;
+  // Portfolio category filters.
+  const categoryTabs = [...document.querySelectorAll(".category-tab")];
+  if (categoryTabs.length && clips.length) {
+    const filterClips = category => {
+      clips.forEach(clip => {
+        const categories = (clip.dataset.categories || "").split(",");
+        const visible = category === "all" || categories.includes(category);
+        clip.hidden = !visible;
+      });
+
+      const visibleClips = clips.filter(c => !c.hidden);
+      const current = clips.find(c => c.classList.contains("is-active"));
+      if (!current || current.hidden) {
+        const first = visibleClips[0];
+        if (first) first.click();
+      }
+    };
+
+    categoryTabs.forEach(tab => {
+      tab.addEventListener("click", () => {
+        categoryTabs.forEach(t => t.classList.toggle("is-active", t === tab));
+        filterClips(tab.dataset.category);
+      });
+    });
   }
 
-  const footerWaveformEl = document.getElementById("footerWaveform");
-  if (footerWaveformEl) {
-    const bars = 64;
-    let html = "";
-    for (let i = 0; i < bars; i++) {
-      const h = Math.round(15 + Math.abs(Math.sin(i * 0.6)) * 60 + Math.random() * 15);
-      html += `<span style="height:${Math.min(100, h)}%"></span>`;
-    }
-    footerWaveformEl.innerHTML = html;
+  // Discord username copy.
+  const discord = document.getElementById("discordCopy");
+  if (discord) {
+    const original = discord.textContent;
+    discord.addEventListener("click", async () => {
+      try { await navigator.clipboard.writeText(discord.dataset.copy || ""); } catch (_) {}
+      discord.textContent = "Copied ✓";
+      setTimeout(() => discord.textContent = original, 1400);
+    });
   }
 
-  /* ============================================================
-     PAGE SCRUBBER — scroll position mapped to a timeline bar
-     ============================================================ */
-  const scrubberFill = document.getElementById("scrubberFill");
-  const scrubberHead = document.getElementById("scrubberHead");
-  if (scrubberFill && scrubberHead) {
-    function updateScrubber() {
-      const max = document.documentElement.scrollHeight - window.innerHeight;
-      const pct = max > 0 ? (window.scrollY / max) * 100 : 0;
-      scrubberFill.style.width = pct + "%";
-      scrubberHead.style.left = pct + "%";
-    }
-    updateScrubber();
-    window.addEventListener("scroll", updateScrubber, { passive: true });
-    window.addEventListener("resize", updateScrubber);
+  const year = document.getElementById("year");
+  if (year) year.textContent = new Date().getFullYear();
+  // Tiny terminal status loop keeps the contact area feeling alive.
+  const contactCommand = document.getElementById("contactCommand");
+  if (contactCommand && !prefersReducedMotion) {
+    const commands = ["ready_for_new_project", "accepting_raw_footage", "timeline_clean", "render_queue_idle"];
+    let ci = 0;
+    setInterval(() => {
+      ci = (ci + 1) % commands.length;
+      contactCommand.animate(
+        [{opacity:1, transform:"translateY(0)"},{opacity:0, transform:"translateY(2px)"},{opacity:1, transform:"translateY(0)"}],
+        {duration:320,easing:"ease-out"}
+      );
+      setTimeout(() => contactCommand.textContent = commands[ci], 110);
+    }, 3600);
+  }
+
+  // Subtle magnetic tilt on client cards — same restraint as the mouse glow.
+  const clientCards = [...document.querySelectorAll(".client")];
+  if (clientCards.length && !prefersReducedMotion && window.matchMedia("(pointer:fine)").matches) {
+    clientCards.forEach(card => {
+      card.addEventListener("mousemove", e => {
+        const r = card.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width - 0.5;
+        const py = (e.clientY - r.top) / r.height - 0.5;
+        card.style.transform = `translateY(-5px) rotateX(${py * -6}deg) rotateY(${px * 6}deg)`;
+      });
+      card.addEventListener("mouseleave", () => { card.style.transform = ""; });
+    });
+  }
+
+  // Highlight the navigation item closest to the visible section.
+  const navLinks = [...document.querySelectorAll(".nav a")];
+  const navTargets = navLinks
+    .map(a => document.querySelector(a.getAttribute("href")))
+    .filter(Boolean);
+  if (navLinks.length && navTargets.length && "IntersectionObserver" in window) {
+    const navObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        navLinks.forEach(link => link.classList.remove("is-current"));
+        const i = navTargets.indexOf(entry.target);
+        if (i >= 0) navLinks[i].classList.add("is-current");
+      });
+    }, {threshold:0.45});
+    navTargets.forEach(target => navObserver.observe(target));
   }
 
 })();

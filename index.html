@@ -1,509 +1,317 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Iarley Prod — Video Editor</title>
-<meta name="description" content="Video editor specialized in cutting, motion and color grading. Premiere Pro, After Effects and Photoshop.">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iarley Prod — Video Editor</title>
+  <meta name="description" content="Video editor specializing in YouTube content, storytelling, pacing and high-retention edits.">
 
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="Iarley Prod">
-<meta property="og:title" content="Iarley Prod — Video Editor">
-<meta property="og:description" content="Video editor specializing in YouTube content, storytelling, engaging pacing and high-retention edits.">
-<meta property="og:image" content="https://iarleyvisuals.com/assets/og-image.jpg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:url" content="https://iarleyvisuals.com/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Iarley Prod">
+  <meta property="og:title" content="Iarley Prod — Video Editor">
+  <meta property="og:description" content="Video editor specializing in YouTube content, storytelling, engaging pacing and high-retention edits.">
+  <meta property="og:image" content="https://iarleyvisuals.com/assets/og-image.jpg">
+  <meta property="og:url" content="https://iarleyvisuals.com/">
 
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Iarley Prod — Video Editor">
-<meta name="twitter:description" content="Video editor specializing in YouTube content, storytelling, engaging pacing and high-retention edits.">
-<meta name="twitter:image" content="https://iarleyvisuals.com/assets/og-image.jpg">
-
-<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
-<link rel="icon" type="image/png" sizes="64x64" href="assets/favicon-64.png">
-<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet">
-
-<link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- ambient background glow — sits behind every section -->
-<div class="ambient-glow" aria-hidden="true">
-  <span class="ambient-glow__blob ambient-glow__blob--1"></span>
-  <span class="ambient-glow__blob ambient-glow__blob--2"></span>
-  <span class="ambient-glow__blob ambient-glow__blob--3"></span>
-  <span class="ambient-glow__blob ambient-glow__blob--4"></span>
-  <span class="ambient-glow__grid"></span>
-</div>
+  <div class="ambient" aria-hidden="true">
+    <div class="ambient__orb ambient__orb--one"></div>
+    <div class="ambient__orb ambient__orb--two"></div>
+    <div class="ambient__orb ambient__orb--three"></div>
+    <div class="ambient__grid"></div>
+  </div>
 
+  <div class="top-line" aria-hidden="true"></div>
+  <div class="mouse-glow" id="mouseGlow" aria-hidden="true"></div>
 
-<!-- page scrubber: scroll position as an editing timeline -->
-<div class="scrubber" aria-hidden="true">
-  <div class="scrubber__fill" id="scrubberFill"></div>
-  <div class="scrubber__head" id="scrubberHead"></div>
-</div>
-
-<!-- ================= BOOT SEQUENCE ================= -->
-<div class="boot-screen" id="bootScreen">
-  <div class="boot-screen__log" id="bootLog"></div>
-  <button class="boot-screen__skip" id="bootSkip" type="button">Skip intro →</button>
-</div>
-
-<!-- custom cursor: transparent ring with white outline -->
-<div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
-
-<!-- subtle film grain texture -->
-<div class="grain" aria-hidden="true"></div>
-<div class="noise-layer" aria-hidden="true"></div>
-<div class="scanlines" aria-hidden="true"></div>
-
-<!-- ================= HEADER ================= -->
-<header class="header" id="header">
-  <div class="header__inner">
-    <a href="#home" class="logo">
-      <span class="logo__mark">$</span> editor<span class="logo__slash">@</span>reel<span class="logo__cursor">_</span>
+  <header class="header">
+    <a class="brand" href="#home" aria-label="Iarley Prod home">
+      <span class="brand__prompt">~/</span><span>iarley</span><span class="brand__cursor">_</span>
     </a>
 
-    <nav class="nav" id="mainNav">
-      <a href="#home" class="nav__link">Home</a>
-      <a href="#tools" class="nav__link">Tools</a>
-      <a href="#changelog" class="nav__link">About</a>
-      <a href="#work" class="nav__link">Work</a>
-      <a href="#contact" class="nav__link nav__link--cta">Contact</a>
+    <nav class="nav">
+      <a href="#work">work</a>
+      <a href="#about">about</a>
+      <a href="#contact">contact</a>
     </nav>
 
-    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
-  </div>
-</header>
-
-<main>
-
-  <!-- ================= HERO ================= -->
-  <section class="hero" id="home">
-
-    <!-- background: looping local video, muted -->
-    <div class="hero__video-bg" aria-hidden="true">
-      <video
-        autoplay
-        muted
-        loop
-        playsinline
-        preload="auto"
-        poster="assets/intro-smp-poster.jpg">
-        <source src="assets/intro-smp-bg.mp4" type="video/mp4">
-      </video>
+    <div class="header__status">
+      <span class="status-dot"></span>
+      available
     </div>
+  </header>
 
-    <!-- background: subtle dark scrim for legibility -->
-    <div class="hero__rain-wrap" aria-hidden="true">
-      <div class="hero__rain-scrim"></div>
-    </div>
-
-    <div class="nle reveal">
-
-      <div class="nle__menubar">
-        <span class="nle__brand"><span class="nle__brand-mark">◆</span>reel.editor</span>
-        <div class="nle__menu" aria-hidden="true">
-          <span>File</span><span>Edit</span><span>Clip</span><span>Timeline</span><span>Window</span>
+  <main>
+    <section class="hero" id="home">
+      <div class="hero__copy">
+        <div class="terminal-label">
+          <span class="terminal-label__prompt">$</span>
+          <span>./launch-editor.sh</span>
+          <span class="terminal-label__cursor">▌</span>
         </div>
-        <div class="hero__status">
-          <span class="rec-dot"></span>
-          <span>OPEN FOR NEW PROJECTS</span>
-          <span class="timecode" id="timecode">00:00:00:00</span>
-        </div>
-      </div>
 
-      <div class="nle__viewer hero__inner">
-        <p class="eyebrow">Video Editor</p>
-
-        <h1 class="hero__title">
-          <span class="nle__script">Crafted by</span>
-          Iarley<br>
-          <span class="hero__title--accent">Prod</span>
-        </h1>
-
-        <p class="hero__subtitle">
-          Send me the raw files and a deadline. I'll send back
-          something people actually watch to the end — not just
-          the first five seconds.
+        <p class="eyebrow">Freelance video editor</p>
+        <h1>Stories built<br>frame <span>by frame.</span></h1>
+        <p class="hero__lead">
+          Fast-paced YouTube editing, clean storytelling, sound design and motion
+          built around one thing: keeping people watching.
         </p>
 
         <div class="hero__actions">
-          <a href="#contact" class="btn btn--primary">Let's talk</a>
-          <a href="#work" class="btn btn--ghost">See my work</a>
+          <a class="button button--primary" href="#work">View my work</a>
+          <a class="button button--glass" href="#contact">Start a project</a>
         </div>
       </div>
 
-      <div class="nle__timeline" aria-hidden="true">
-        <div class="nle__ruler">
-          <span>00:00</span><span>00:05</span><span>00:10</span><span>00:15</span><span>00:20</span><span>00:25</span>
-          <div class="nle__playhead"></div>
+      <div class="hero__editor glass">
+        <div class="editor__top">
+          <div class="window-controls" aria-hidden="true">
+            <span></span><span></span><span></span>
+          </div>
+          <span class="editor__path">/home/iarley/projects/showreel</span>
+          <span class="editor__time" id="timecode">00:00:00:00</span>
         </div>
 
-        <div class="nle__track">
-          <span class="nle__track-label">V1</span>
-          <div class="nle__clip" style="width:20%">
-            <span class="nle__kf"></span><span class="nle__kf"></span><span class="nle__kf"></span>
-          </div>
-          <div class="nle__clip nle__clip--alt" style="width:32%">
-            <span class="nle__kf"></span><span class="nle__kf"></span>
-          </div>
-          <div class="nle__clip" style="width:14%">
-            <span class="nle__kf"></span>
-          </div>
-          <div class="nle__clip nle__clip--alt" style="width:24%">
-            <span class="nle__kf"></span><span class="nle__kf"></span><span class="nle__kf"></span>
+        <div class="editor__viewer">
+          <div class="viewer__noise"></div>
+          <div class="viewer__center">
+            <span class="viewer__tag">TIMELINE 01</span>
+            <strong>EDITING<br>IN PROGRESS</strong>
+            <small>sequence_1080p.prproj</small>
           </div>
         </div>
 
-        <div class="nle__track nle__track--audio">
-          <span class="nle__track-label">A1</span>
-          <div class="nle__waveform" id="nleWaveform"></div>
+        <div class="timeline">
+          <div class="timeline__ruler">
+            <span>00:00</span><span>00:05</span><span>00:10</span><span>00:15</span>
+            <span>00:20</span><span>00:25</span><span>00:30</span>
+            <i class="timeline__playhead"></i>
+          </div>
+
+          <div class="timeline__track">
+            <span class="track-label">V1</span>
+            <div class="clip clip--wide"><b>MAIN CUT</b><small>talking_head.mov</small></div>
+            <div class="clip"><b>B-ROLL</b><small>gameplay.mp4</small></div>
+            <div class="clip clip--short"><b>ZOOM</b></div>
+            <div class="clip"><b>STORY</b><small>sequence_04</small></div>
+          </div>
+
+          <div class="timeline__track timeline__track--audio">
+            <span class="track-label">A1</span>
+            <div class="waveform" id="nleWaveform"></div>
+          </div>
+        </div>
+
+        <div class="editor__bottom">
+          <span>1080p</span>
+          <span>60 FPS</span>
+          <span>REC709</span>
+          <span class="editor__ready">● READY TO EXPORT</span>
         </div>
       </div>
 
-    </div>
+      <div class="hero__meta">
+        <span>VIDEO EDITOR / BRAZIL</span>
+        <span>01 — 04</span>
+      </div>
+    </section>
 
-    <a href="#tools" class="scroll-cue" aria-label="Scroll down">
-      <span>Scroll</span>
-      <span class="scroll-cue__line"></span>
-    </a>
-  </section>
+    <section class="work section" id="work">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Selected work</p>
+          <h2>Recent edits</h2>
+        </div>
+        <p>Browse my edits by style. Select a category, then click any video to preview the full edit.</p>
+      </div>
 
-  <!-- ================= TECH TICKER ================= -->
-  <div class="ticker" aria-hidden="true">
-    <div class="ticker__track">
-      <span>● REC</span><span>3840×2160</span><span>23.976 FPS</span><span>H.264</span><span>-14 LUFS</span><span>◆ KEYFRAME</span><span>TIMELINE 01</span><span>EXPORTING…</span>
-      <span>● REC</span><span>3840×2160</span><span>23.976 FPS</span><span>H.264</span><span>-14 LUFS</span><span>◆ KEYFRAME</span><span>TIMELINE 01</span><span>EXPORTING…</span>
-    </div>
-  </div>
+      <div class="video-categories" role="tablist" aria-label="Video categories">
+        <button class="category-tab is-active" type="button" data-category="all">All work</button>
+        <button class="category-tab" type="button" data-category="engaging">Engaging</button>
+        <button class="category-tab" type="button" data-category="storytelling">Storytelling</button>
+        <button class="category-tab" type="button" data-category="gaming">Gaming</button>
+        <button class="category-tab" type="button" data-category="short-form">Short-form</button>
+      </div>
 
-  <!-- ================= TOOLS (timeline marquee) ================= -->
-  <section class="tools" id="tools">
-    <div class="tools__glow" aria-hidden="true"></div>
-    <span class="section-watermark" aria-hidden="true">EDIT</span>
+      </div>
 
-    <span class="float-icon float-icon--a" style="width:64px;height:64px;top:12%;right:14%;" aria-hidden="true">
-      <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="9" width="18" height="12" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M3 9l2-5h4l-2 5M9 9l2-5h4l-2 5M15 9l2-5h3l-1 5" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
-    </span>
-    <span class="float-icon float-icon--b" style="width:44px;height:44px;bottom:10%;left:6%;" aria-hidden="true">
-      <svg viewBox="0 0 24 24" fill="none"><circle cx="6" cy="6" r="2.4" stroke="currentColor" stroke-width="1.5"/><circle cx="6" cy="18" r="2.4" stroke="currentColor" stroke-width="1.5"/><path d="M8 7.5L20 19M8 16.5L20 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-    </span>
-
-    <div class="section-head reveal">
-      <p class="eyebrow">Software</p>
-      <span class="script-accent">The toolkit</span>
-      <h2 class="section-title">What I edit with</h2>
-      <p class="section-lead">Pr for the cut, Ae when it needs to move, Ps when a thumbnail has to stop someone mid-scroll.</p>
-    </div>
-
-    <div class="timeline-ruler reveal" aria-hidden="true">
-      <span>00:00</span><span>00:05</span><span>00:10</span><span>00:15</span><span>00:20</span><span>00:25</span><span>00:30</span>
-    </div>
-
-    <div class="marquee reveal">
-      <div class="marquee__track" id="marqueeTrack">
-        <!-- duplicated via JS for a seamless loop -->
-        <div class="clip clip--pr">
-          <span class="clip__kf"></span>
-          <span class="clip__badge">Pr</span>
-          <div class="clip__info">
-            <strong>Premiere Pro</strong>
-            <small>Cutting &amp; editing</small>
+      <div class="showcase glass">
+        <div class="showcase__header">
+          <div>
+            <span class="mono-muted">/projects/recent</span>
+            <strong id="showroomTitle">Video 01</strong>
           </div>
+          <span class="mono-muted"><span id="showroomPos">01</span> / <span id="showroomTotal">15</span></span>
         </div>
-        <div class="clip clip--ae">
-          <span class="clip__kf"></span>
-          <span class="clip__badge">Ae</span>
-          <div class="clip__info">
-            <strong>After Effects</strong>
-            <small>Motion &amp; VFX</small>
-          </div>
-        </div>
-        <div class="clip clip--ps">
-          <span class="clip__kf"></span>
-          <span class="clip__badge">Ps</span>
-          <div class="clip__info">
-            <strong>Photoshop</strong>
-            <small>Thumbnails &amp; retouch</small>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- ================= ABOUT ================= -->
-  <section class="changelog" id="changelog">
-    <div class="changelog__glow" aria-hidden="true"></div>
-    <span class="section-watermark" aria-hidden="true">ABOUT</span>
-
-    <span class="float-icon float-icon--b" style="width:56px;height:56px;top:14%;right:10%;" aria-hidden="true">
-      <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.3"/><circle cx="12" cy="12" r="3.2" stroke="currentColor" stroke-width="1.3"/><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8" stroke="currentColor" stroke-width="1"/></svg>
-    </span>
-    <span class="float-icon float-icon--c" style="width:46px;height:46px;bottom:8%;right:22%;" aria-hidden="true">
-      <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.3"/><circle cx="12" cy="12" r="2" stroke="currentColor" stroke-width="1.3"/><circle cx="12" cy="6" r="1.5" stroke="currentColor" stroke-width="1.1"/><circle cx="17" cy="10" r="1.5" stroke="currentColor" stroke-width="1.1"/><circle cx="15" cy="16.5" r="1.5" stroke="currentColor" stroke-width="1.1"/><circle cx="9" cy="16.5" r="1.5" stroke="currentColor" stroke-width="1.1"/><circle cx="7" cy="10" r="1.5" stroke="currentColor" stroke-width="1.1"/></svg>
-    </span>
-
-    <div class="section-head reveal">
-      <p class="eyebrow">About</p>
-      <span class="script-accent">A little about me</span>
-      <h2 class="section-title">cat about.md</h2>
-    </div>
-
-    <div class="about__wrap reveal">
-      <div class="mask-demo" aria-hidden="true">
-        <div class="mask-demo__base"></div>
-        <div class="mask-demo__reveal"></div>
-        <svg class="mask-demo__character" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
-          <circle cx="50" cy="34" r="12"/>
-          <path d="M28,96 C28,70 34,57 50,57 C66,57 72,70 72,96 Z"/>
-        </svg>
-        <svg class="mask-demo__outline" viewBox="0 0 100 100" preserveAspectRatio="none">
-          <path d="M30,10 L70,5 L90,35 L85,70 L55,95 L20,85 L5,55 L15,25 Z"/>
-        </svg>
-        <div class="mask-demo__kfrow">
-          <span class="mask-demo__kf"></span>
-          <span class="mask-demo__kf"></span>
-          <span class="mask-demo__kf"></span>
-        </div>
-      </div>
-
-      <div class="about__content">
-        <p class="about__meta">◆ 00:00:12:04 — profile.clip</p>
-        <p class="about__lead">Freelance video editor crafting engaging, fast-paced content for YouTube.</p>
-        <p class="about__text">My focus is on clean storytelling, smooth pacing, sound design, and keeping viewers engaged throughout the video — every cut earns its place, or it doesn't make it in.</p>
-
-        <div class="about__tags">
-          <span class="about__tag">Storytelling</span>
-          <span class="about__tag">Fast pacing</span>
-          <span class="about__tag">Sound design</span>
-          <span class="about__tag">Retention-focused</span>
-        </div>
-      </div>
-
-      <div class="sound-demo" aria-hidden="true">
-        <div class="sound-demo__bars">
-          <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
-        </div>
-        <svg class="sound-demo__wave" viewBox="0 0 100 20" preserveAspectRatio="none">
-          <path d="M0,10 Q6,2 12,10 T24,10 T36,10 T48,10 T60,10 T72,10 T84,10 T100,10" />
-        </svg>
-      </div>
-    </div>
-  </section>
-
-  <!-- ================= WORK (featured video showcase) ================= -->
-  <section class="work" id="work">
-    <div class="work__glow" aria-hidden="true"></div>
-    <span class="section-watermark" aria-hidden="true">REEL</span>
-
-    <span class="float-icon float-icon--a" style="width:50px;height:50px;top:8%;left:8%;" aria-hidden="true">
-      <svg viewBox="0 0 24 24" fill="none"><path d="M12 3v12M7 10l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 19h16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-    </span>
-
-    <div class="section-head reveal">
-      <p class="eyebrow">Showreel</p>
-      <span class="script-accent">Recent selects</span>
-      <h2 class="section-title">Recent edits</h2>
-      <p class="section-lead">A few cuts that shipped recently — more get added as projects wrap.</p>
-    </div>
-
-    <div class="showroom reveal">
-
-      <div class="showroom__tabs" role="tablist" aria-label="Video format">
-        <button type="button" class="showroom__tab is-active" data-group="long" role="tab" aria-selected="true">
-          <svg viewBox="0 0 24 24" fill="none"><rect x="2" y="6" width="20" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M10 9l5 3-5 3V9z" fill="currentColor"/></svg>
-          Long forms
-        </button>
-        <button type="button" class="showroom__tab" data-group="shorts" role="tab" aria-selected="false">
-          <svg viewBox="0 0 24 24" fill="none"><rect x="6" y="2" width="12" height="20" rx="2.5" stroke="currentColor" stroke-width="1.5"/><path d="M10 9l4.5 3-4.5 3V9z" fill="currentColor"/></svg>
-          Shorts
-        </button>
-      </div>
-
-      <div class="showroom__viewer" id="showroomViewer">
-        <span class="showroom__corner showroom__corner--tl" aria-hidden="true"></span>
-        <span class="showroom__corner showroom__corner--tr" aria-hidden="true"></span>
-        <span class="showroom__corner showroom__corner--bl" aria-hidden="true"></span>
-        <span class="showroom__corner showroom__corner--br" aria-hidden="true"></span>
-
-        <div class="showroom__frame">
+        <div class="showcase__frame" id="showroomViewer">
           <iframe
             id="showroomFrame"
-            src="https://www.youtube-nocookie.com/embed/xkB_XB-XIIg"
-            title="Video 08"
+            src="https://www.youtube-nocookie.com/embed/SOAxJ7F1R_8"
+            title="Video 01"
             loading="lazy"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen>
-          </iframe>
+            allowfullscreen></iframe>
         </div>
 
-        <div class="showroom__bar">
-          <span class="showroom__rec"><span class="rec-dot"></span>PLAYING</span>
-          <span class="showroom__title" id="showroomTitle">Video 08</span>
-          <span class="showroom__count"><span id="showroomPos">01</span> / <span id="showroomTotal">08</span></span>
+        <div class="showcase__strip" id="showroomStripLong">
+          <button class="filmclip is-active" type="button" data-id="SOAxJ7F1R_8" data-title="Video 01" data-categories="engaging,gaming">
+            <img src="https://img.youtube.com/vi/SOAxJ7F1R_8/mqdefault.jpg" alt="Video 01" loading="lazy">
+          </button>
+          <button class="filmclip" type="button" data-id="8Fg0LSk1pmY" data-title="Video 02" data-categories="storytelling,gaming">
+            <img src="https://img.youtube.com/vi/8Fg0LSk1pmY/mqdefault.jpg" alt="Video 02" loading="lazy">
+          </button>
+          <button class="filmclip" type="button" data-id="5OUJnLcb6lI" data-title="Video 03" data-categories="engaging,gaming">
+            <img src="https://img.youtube.com/vi/5OUJnLcb6lI/mqdefault.jpg" alt="Video 03" loading="lazy">
+          </button>
+          <button class="filmclip" type="button" data-id="vEqPxgzor2Y" data-title="Video 04" data-categories="storytelling,gaming">
+            <img src="https://img.youtube.com/vi/vEqPxgzor2Y/mqdefault.jpg" alt="Video 04" loading="lazy">
+          </button>
+          <button class="filmclip" type="button" data-id="xkB_XB-XIIg" data-title="Video 05" data-categories="engaging,gaming">
+            <img src="https://img.youtube.com/vi/xkB_XB-XIIg/mqdefault.jpg" alt="Video 05" loading="lazy">
+          </button>
+          <button class="filmclip" type="button" data-id="DRIFpDfwA9k" data-title="Featured cut" data-categories="engaging">
+            <img src="https://img.youtube.com/vi/DRIFpDfwA9k/mqdefault.jpg" alt="Featured cut" loading="lazy">
+          </button>
+          <button class="filmclip" type="button" data-id="1wDBGx-JlHs" data-title="Video 06" data-categories="gaming,storytelling">
+            <img src="https://img.youtube.com/vi/1wDBGx-JlHs/mqdefault.jpg" alt="Video 06" loading="lazy">
+          </button>
+          <button class="filmclip" type="button" data-id="_G4I8Jvd3jU" data-title="Video 07" data-categories="engaging,gaming">
+            <img src="https://img.youtube.com/vi/_G4I8Jvd3jU/mqdefault.jpg" alt="Video 07" loading="lazy">
+          </button>
+          <button class="filmclip" type="button" data-id="NmHEMBcHlx0" data-title="Video 08" data-categories="storytelling,gaming">
+            <img src="https://img.youtube.com/vi/NmHEMBcHlx0/mqdefault.jpg" alt="Video 08" loading="lazy">
+          </button>
+          <button class="filmclip" type="button" data-id="iArBNx0_SVw" data-title="Video 09" data-categories="engaging,gaming">
+            <img src="https://img.youtube.com/vi/iArBNx0_SVw/mqdefault.jpg" alt="Video 09" loading="lazy">
+          </button>
+          <button class="filmclip" type="button" data-id="TzDF9J_hOm8" data-title="Video 10" data-categories="engaging">
+            <img src="https://img.youtube.com/vi/TzDF9J_hOm8/mqdefault.jpg" alt="Video 10" loading="lazy">
+          </button>
+          <button class="filmclip" type="button" data-id="nactHjNF55A" data-title="Video 11" data-categories="storytelling,gaming">
+            <img src="https://img.youtube.com/vi/nactHjNF55A/mqdefault.jpg" alt="Video 11" loading="lazy">
+          </button>
+
+          <button class="filmclip" type="button" data-id="roQ-9guBwnI" data-title="Video 12" data-categories="engaging,gaming">
+            <img src="https://img.youtube.com/vi/roQ-9guBwnI/mqdefault.jpg" alt="Video 12" loading="lazy">
+          </button>
+          <button class="filmclip" type="button" data-id="w040lMC3JjY" data-title="Video 13" data-categories="storytelling,gaming">
+            <img src="https://img.youtube.com/vi/w040lMC3JjY/mqdefault.jpg" alt="Video 13" loading="lazy">
+          </button>
+          <button class="filmclip" type="button" data-id="aq-MbU3zF9o" data-title="Theme Park Tycoon 2" data-categories="engaging,gaming,storytelling">
+            <img src="https://img.youtube.com/vi/aq-MbU3zF9o/mqdefault.jpg" alt="Theme Park Tycoon 2" loading="lazy">
+          </button>
+          <button class="filmclip" type="button" data-id="NY8gdYAH-BU" data-title="Video 15" data-categories="engaging,gaming">
+            <img src="https://img.youtube.com/vi/NY8gdYAH-BU/mqdefault.jpg" alt="Video 15" loading="lazy">
+          </button>
+          <button class="filmclip" type="button" data-id="p-lLAU-Nl4U" data-title="Short 01" data-categories="short-form">
+            <img src="https://img.youtube.com/vi/p-lLAU-Nl4U/mqdefault.jpg" alt="Short 01" loading="lazy">
+          </button>
+          <button class="filmclip" type="button" data-id="htkc2gO0IjE" data-title="Short 02" data-categories="short-form">
+            <img src="https://img.youtube.com/vi/htkc2gO0IjE/mqdefault.jpg" alt="Short 02" loading="lazy">
+          </button>
+          <button class="filmclip" type="button" data-id="Dy0W0_Xd-RA" data-title="Short 03" data-categories="short-form">
+            <img src="https://img.youtube.com/vi/Dy0W0_Xd-RA/mqdefault.jpg" alt="Short 03" loading="lazy">
+          </button>
+          <button class="filmclip" type="button" data-id="J23Q5N3gK9A" data-title="Short 04" data-categories="short-form">
+            <img src="https://img.youtube.com/vi/J23Q5N3gK9A/mqdefault.jpg" alt="Short 04" loading="lazy">
+          </button>
         </div>
       </div>
+    </section>
 
-      <div class="showroom__strip is-active" id="showroomStripLong" data-group="long">
 
-        <button type="button" class="filmclip is-active" data-id="xkB_XB-XIIg" data-title="Video 08">
-          <img src="https://img.youtube.com/vi/xkB_XB-XIIg/mqdefault.jpg" alt="" loading="lazy">
-          <span class="filmclip__kf"></span>
-          <span class="filmclip__label">01</span>
-        </button>
-
-        <button type="button" class="filmclip" data-id="DRIFpDfwA9k" data-title="Featured cut">
-          <img src="https://img.youtube.com/vi/DRIFpDfwA9k/mqdefault.jpg" alt="" loading="lazy">
-          <span class="filmclip__kf"></span>
-          <span class="filmclip__label">02</span>
-        </button>
-
-        <button type="button" class="filmclip" data-id="1wDBGx-JlHs" data-title="Video 02">
-          <img src="https://img.youtube.com/vi/1wDBGx-JlHs/mqdefault.jpg" alt="" loading="lazy">
-          <span class="filmclip__kf"></span>
-          <span class="filmclip__label">03</span>
-        </button>
-
-        <button type="button" class="filmclip" data-id="_G4I8Jvd3jU" data-title="Video 03">
-          <img src="https://img.youtube.com/vi/_G4I8Jvd3jU/mqdefault.jpg" alt="" loading="lazy">
-          <span class="filmclip__kf"></span>
-          <span class="filmclip__label">04</span>
-        </button>
-
-        <button type="button" class="filmclip" data-id="NmHEMBcHlx0" data-title="Video 04">
-          <img src="https://img.youtube.com/vi/NmHEMBcHlx0/mqdefault.jpg" alt="" loading="lazy">
-          <span class="filmclip__kf"></span>
-          <span class="filmclip__label">05</span>
-        </button>
-
-        <button type="button" class="filmclip" data-id="iArBNx0_SVw" data-title="Video 05">
-          <img src="https://img.youtube.com/vi/iArBNx0_SVw/mqdefault.jpg" alt="" loading="lazy">
-          <span class="filmclip__kf"></span>
-          <span class="filmclip__label">06</span>
-        </button>
-
-        <button type="button" class="filmclip" data-id="TzDF9J_hOm8" data-title="Video 06">
-          <img src="https://img.youtube.com/vi/TzDF9J_hOm8/mqdefault.jpg" alt="" loading="lazy">
-          <span class="filmclip__kf"></span>
-          <span class="filmclip__label">07</span>
-        </button>
-
-        <button type="button" class="filmclip" data-id="nactHjNF55A" data-title="Video 07">
-          <img src="https://img.youtube.com/vi/nactHjNF55A/mqdefault.jpg" alt="" loading="lazy">
-          <span class="filmclip__kf"></span>
-          <span class="filmclip__label">08</span>
-        </button>
-
+    <section class="process section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Process</p>
+          <h2>Raw → final.</h2>
+        </div>
+        <p>The workflow stays simple: understand the story, tighten the timeline, then make every beat feel intentional.</p>
       </div>
 
-      <div class="showroom__strip showroom__strip--shorts" id="showroomStripShorts" data-group="shorts" hidden>
+      <div class="process__grid">
+        <article class="process-card glass">
+          <span class="process-card__index">01</span>
+          <div class="process-card__bar"><i></i></div>
+          <h3>Ingest</h3>
+          <p>Footage, references, music and the target of the video. Everything gets organized before the first cut.</p>
+          <small>/mnt/raw → /project/source</small>
+        </article>
 
-        <button type="button" class="filmclip filmclip--vertical" data-id="p-lLAU-Nl4U" data-title="Short 01" data-vertical="true">
-          <img src="https://img.youtube.com/vi/p-lLAU-Nl4U/mqdefault.jpg" alt="" loading="lazy">
-          <span class="filmclip__kf"></span>
-          <span class="filmclip__label">01</span>
-        </button>
+        <article class="process-card glass">
+          <span class="process-card__index">02</span>
+          <div class="process-card__bar"><i></i></div>
+          <h3>Cut</h3>
+          <p>Remove dead weight, shape the pacing and make the story work before adding anything flashy.</p>
+          <small>/timeline/main → sequence_01</small>
+        </article>
 
+        <article class="process-card glass">
+          <span class="process-card__index">03</span>
+          <div class="process-card__bar"><i></i></div>
+          <h3>Polish</h3>
+          <p>Sound design, motion, graphics and the tiny details that turn a rough cut into a finished video.</p>
+          <small>/export/master → ready</small>
+        </article>
       </div>
-    </div>
+    </section>
 
-    <p class="work__note reveal">
-      <svg viewBox="0 0 24 24" fill="none" class="work__note-icon"><path d="M3 10l1.5-5.5L18 8l-1.5 5.5L3 10z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><rect x="3" y="10" width="18" height="9" rx="1" stroke="currentColor" stroke-width="1.5"/></svg>
-      Got footage that needs this treatment?
-      <a href="#contact" class="work__note-link">Get in touch</a>
-    </p>
-  </section>
+    <section class="about section" id="about">
+      <div class="about__panel glass">
+        <div class="about__terminal">
+          <span class="mono-muted">$ cat about.md</span>
+          <h2>Editor focused on<br><span>retention.</span></h2>
+          <p>
+            I turn raw footage into fast, clean and intentional edits for creators.
+            Every cut has a purpose: improve the story, the rhythm or the viewer experience.
+          </p>
+        </div>
 
-  <!-- ================= CONTACT ================= -->
-  <section class="contact" id="contact">
-    <div class="contact__glow" aria-hidden="true"></div>
-    <span class="section-watermark" aria-hidden="true">TALK</span>
-
-    <span class="float-icon float-icon--b" style="width:48px;height:48px;top:16%;left:12%;" aria-hidden="true">
-      <svg viewBox="0 0 24 24" fill="none"><path d="M21 3L3 10.5l7 2.5m11-10L13 21l-3-8" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
-    </span>
-
-    <div class="contact__inner reveal">
-      <p class="eyebrow">Contact</p>
-      <span class="script-accent">Let's make something</span>
-      <h2 class="section-title">Got footage that needs a story?</h2>
-      <p class="section-lead">Send the files, the deadline, and anything you really don't want cut. I'll take it from there.</p>
-
-      <a href="mailto:iarleyvisualsgfx@gmail.com" class="contact__email">iarleyvisualsgfx@gmail.com</a>
-
-      <div class="contact__socials">
-        <a href="https://wa.me/5521995680301" class="social-link" aria-label="WhatsApp" title="WhatsApp" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" fill="none"><path d="M6.5 17.5 5 20l2.6-1.4A8 8 0 1 0 5 12a7.9 7.9 0 0 0 1.5 5.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 10.3c.4 2 2.2 3.8 4.2 4.2.7.1 1-.6.8-1.2l-.4-.9c-.1-.3-.5-.4-.8-.3l-.7.3c-.6-.4-1.5-1.3-1.9-1.9l.3-.7c.1-.3 0-.7-.3-.8l-.9-.4c-.6-.2-1.3.1-1.2.8Z" fill="currentColor"/></svg>
-        </a>
-        <a href="https://ytjobs.co/talent/profile/579002" class="social-link" aria-label="YTJobs portfolio" title="YTJobs — Portfolio" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" fill="none"><rect x="3.5" y="5" width="17" height="14" rx="3" stroke="currentColor" stroke-width="1.6"/><path d="M10 9.5v5l4.5-2.5L10 9.5Z" fill="currentColor"/></svg>
-        </a>
-        <a href="https://x.com/iarleyvisuals" class="social-link" aria-label="X (Twitter)" title="X — @iarleyvisuals" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" fill="none"><path d="M5 5l14 14M19 5 5 19" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-        </a>
-        <button type="button" class="social-link social-link--copy" data-copy="iarleyyyy" aria-label="Discord: iarleyyyy — click to copy" title="Discord — click to copy username">
-          <svg viewBox="0 0 24 24" fill="none"><path d="M8 9.5c2.8-.9 5.2-.9 8 0M7.2 15.3c2.9 1 6.7 1 9.6 0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><rect x="3.5" y="6.5" width="17" height="11.5" rx="5.5" stroke="currentColor" stroke-width="1.6"/><circle cx="9.2" cy="12.2" r="1.15" fill="currentColor"/><circle cx="14.8" cy="12.2" r="1.15" fill="currentColor"/></svg>
-        </button>
+        <div class="about__details">
+          <div><span>01</span><strong>Storytelling</strong><small>Structure that makes the next second matter.</small></div>
+          <div><span>02</span><strong>Pacing</strong><small>Fast when it should be. Quiet when it needs to breathe.</small></div>
+          <div><span>03</span><strong>Sound + motion</strong><small>SFX, music and motion that support the edit.</small></div>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
+    <section class="contact section" id="contact">
+      <div class="contact__panel glass">
+        <div>
+          <p class="eyebrow">New project</p>
+          <h2>Got footage?<br><span>Let's make it hit.</span></h2>
+          <p>Send the footage, deadline and references. I'll take it from there.</p>
+          <div class="contact__terminal">
+            <span>iarley@editor:~$</span>
+            <strong id="contactCommand">ready_for_new_project</strong><i>▌</i>
+          </div>
+        </div>
 
-</main>
+        <div class="contact__links">
+          <a class="contact__email" href="mailto:iarleyvisualsgfx@gmail.com">iarleyvisualsgfx@gmail.com</a>
+          <div class="contact__socials">
+            <a href="https://ytjobs.co/talent/profile/579002" target="_blank" rel="noopener">YTJobs</a>
+            <a href="https://x.com/iarleyvisuals" target="_blank" rel="noopener">X / Twitter</a>
+            <button type="button" id="discordCopy" data-copy="iarleyvfx2k26">Discord: iarleyvfx2k26</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
 
-<!-- ================= OS TASKBAR ================= -->
-<div class="os-panel" id="osPanel" aria-hidden="true">
-  <div class="os-panel__left">
-    <span class="os-panel__logo">▦</span>
-  </div>
+  <footer class="footer">
+    <span>iarley@editor:~$ exit</span>
+    <span>© <span id="year"></span> Iarley Prod</span>
+  </footer>
 
-  <nav class="os-panel__workspaces">
-    <a href="#home" class="os-panel__ws" data-ws="1">1</a>
-    <a href="#tools" class="os-panel__ws" data-ws="2">2</a>
-    <a href="#changelog" class="os-panel__ws" data-ws="3">3</a>
-    <a href="#work" class="os-panel__ws" data-ws="4">4</a>
-    <a href="#contact" class="os-panel__ws" data-ws="5">5</a>
-  </nav>
-
-  <div class="os-panel__right">
-    <svg class="os-panel__icon" viewBox="0 0 24 24" fill="none" title="Network">
-      <path d="M2 8.5a15 15 0 0 1 20 0M5.5 12a10 10 0 0 1 13 0M9 15.5a5 5 0 0 1 6 0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-      <circle cx="12" cy="19" r="1.2" fill="currentColor"/>
-    </svg>
-    <svg class="os-panel__icon" viewBox="0 0 24 24" fill="none" title="Volume">
-      <path d="M4 9v6h4l5 4V5L8 9H4z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
-      <path d="M17 9a4.5 4.5 0 0 1 0 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-    </svg>
-    <span class="os-panel__clock" id="osClock">00:00</span>
-  </div>
-</div>
-
-<footer class="footer">
-  <div class="footer__waveform" id="footerWaveform" aria-hidden="true"></div>
-  <div class="neofetch">
-    <div class="neofetch__logo" aria-hidden="true">
-      <img src="assets/avatar.png" alt="" loading="lazy">
-    </div>
-    <ul class="neofetch__specs">
-      <li><span class="neofetch__key">OS</span>EditorOS 26.04 LTS</li>
-      <li><span class="neofetch__key">Kernel</span>cut-and-color 6.6</li>
-      <li><span class="neofetch__key">Shell</span>creative-bash</li>
-      <li><span class="neofetch__key">Apps</span>Premiere Pro, After Effects, Photoshop</li>
-      <li><span class="neofetch__key">Uptime</span>fueled by coffee</li>
-      <li><span class="neofetch__key">Memory</span>ideas: unlimited</li>
-    </ul>
-  </div>
-  <p class="footer__copy">© <span id="year"></span> — Video Editor. Cut frame by frame.</p>
-</footer>
-
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
