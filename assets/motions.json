@@ -1,7 +1,11 @@
 [
   {
-    "title": "Intro banana",
-    "src": "assets/Intro%20banana.mp4"
+    "title": "clip 720p60",
+    "src": "assets/clip_720p60.mp4"
+  },
+  {
+    "title": "intro smp bg",
+    "src": "assets/intro-smp-bg.mp4"
   },
   {
     "title": "Motion1",

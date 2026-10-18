@@ -146,6 +146,15 @@
     document.body.classList.remove("modal-open");
   };
 
+const motionObserver = "IntersectionObserver" in window
+  ? new IntersectionObserver(entries => {
+      entries.forEach(({ target, isIntersecting }) => {
+        if (isIntersecting) target.play().catch(() => {});
+        else target.pause();
+      });
+    }, { threshold: 0.25 })
+  : null;
+
   async function loadMotions() {
     if (!motionGrid) return;
     try {
@@ -164,7 +173,7 @@
         card.className = "motion-card";
         const video = document.createElement("video");
         video.className = "motion-card__video";
-        video.src = item.src; video.muted = true; video.loop = true; video.autoplay = true; video.playsInline = true; video.preload = "metadata";
+        video.src = item.src; video.muted = true; video.loop = true; video.autoplay = !motionObserver; video.playsInline = true; video.preload = "metadata";
         video.setAttribute("aria-label", item.title || `Motion ${index + 1}`);
         const media = document.createElement("div"); media.className = "motion-card__media"; media.appendChild(video);
         const overlay = document.createElement("button"); overlay.className = "motion-card__open"; overlay.type = "button"; overlay.textContent = "↗"; overlay.setAttribute("aria-label", `Open ${item.title || `Motion ${index + 1}`}`);
@@ -180,7 +189,8 @@
         const mute = document.createElement("button"); mute.className = "motion-mute"; mute.type = "button"; mute.textContent = "🔇 MUTED"; mute.setAttribute("aria-pressed", "true");
         mute.addEventListener("click", () => { video.muted = !video.muted; mute.textContent = video.muted ? "🔇 MUTED" : "🔊 SOUND ON"; mute.setAttribute("aria-pressed", String(!video.muted)); });
         footer.append(title, mute); card.append(media, footer); motionGrid.appendChild(card);
-        video.play().catch(() => {});
+        if (motionObserver) motionObserver.observe(video);
+else video.play().catch(() => {});
       });
       if (motionCount) motionCount.textContent = `${supported.length} MOTION${supported.length === 1 ? "" : "S"}`;
       if (!supported.length) motionGrid.innerHTML = '<div class="motion-empty">No supported video files found in the manifest.</div>';
