@@ -3,314 +3,300 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Iarley Prod — Video Editor</title>
-  <meta name="description" content="Video editor specializing in YouTube content, storytelling, pacing and high-retention edits.">
+  <title>Iarley — Gaming Video Editor</title>
+  <meta name="description" content="Iarley is a gaming video editor focused on fast pacing, clean storytelling, motion graphics, sound design and retention.">
 
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="Iarley Prod">
-  <meta property="og:title" content="Iarley Prod — Video Editor">
-  <meta property="og:description" content="Video editor specializing in YouTube content, storytelling, engaging pacing and high-retention edits.">
-  <meta property="og:image" content="https://iarleyvisuals.com/assets/og-image.jpg">
+  <meta property="og:site_name" content="Iarley Visuals">
+  <meta property="og:title" content="Iarley — Gaming Video Editor">
+  <meta property="og:description" content="Fast-paced gaming edits, motion graphics and storytelling built for retention.">
   <meta property="og:url" content="https://iarleyvisuals.com/">
 
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700&family=Titan+One&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-  <div class="ambient" aria-hidden="true">
-    <div class="ambient__orb ambient__orb--one"></div>
-    <div class="ambient__orb ambient__orb--two"></div>
-    <div class="ambient__orb ambient__orb--three"></div>
-    <div class="ambient__grid"></div>
-  </div>
-
-  <div class="top-line" aria-hidden="true"></div>
-  <div class="mouse-glow" id="mouseGlow" aria-hidden="true"></div>
+  <div class="page-noise" aria-hidden="true"></div>
+  <div class="blob blob--blue" aria-hidden="true"></div>
+  <div class="blob blob--blue-right" aria-hidden="true"></div>
+  <div class="blob blob--lime" aria-hidden="true"></div>
+  <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
 
   <header class="header">
-    <a class="brand" href="#home" aria-label="Iarley Prod home">
-      <span class="brand__prompt">~/</span><span>iarley</span><span class="brand__cursor">_</span>
+    <a class="brand" href="#home" aria-label="Iarley home">
+      <span class="brand__box">I</span>
+      <span>IARLEY<span class="brand__dot">.</span>VFX</span>
     </a>
 
-    <nav class="nav">
-      <a href="#work">work</a>
-      <a href="#about">about</a>
-      <a href="#contact">contact</a>
+    <nav class="nav" aria-label="Primary navigation">
+      <a href="#work">edits</a>
+      <a href="#about">about me</a>
+      <a href="#work" data-work-tab="long">long videos</a>
+      <a href="#work" data-work-tab="shorts">shorts</a>
+      <a href="#motions" data-work-tab="motions">motions</a>
     </nav>
 
-    <div class="header__status">
-      <span class="status-dot"></span>
-      available
-    </div>
+    <a class="available-pill" href="#contact"><span></span> available</a>
   </header>
 
   <main>
     <section class="hero" id="home">
       <div class="hero__copy">
-        <div class="terminal-label">
-          <span class="terminal-label__prompt">$</span>
-          <span>./launch-editor.sh</span>
-          <span class="terminal-label__cursor">▌</span>
+        <div class="hero__kicker">
+          <span class="hero__kicker-dot"></span>
+          GAMING VIDEO EDITOR
+          <span class="hero__kicker-slash">/</span>
+          YOUTUBE
         </div>
 
-        <p class="eyebrow">Freelance video editor</p>
-        <h1>Stories built<br>frame <span>by frame.</span></h1>
+        <h1 class="hero__title">
+          I MAKE GAMING
+          <span class="hero__title-line hero__title-line--blue">VIDEOS HIT.</span>
+        </h1>
+
         <p class="hero__lead">
-          Fast-paced YouTube editing, clean storytelling, sound design and motion
-          built around one thing: keeping people watching.
+          Fast cuts, stupidly good timing, motion graphics and sound design —
+          built around <strong>retention</strong>, not effects for the sake of effects.
         </p>
 
         <div class="hero__actions">
-          <a class="button button--primary" href="#work">View my work</a>
-          <a class="button button--glass" href="#contact">Start a project</a>
+          <a class="button button--blue" href="#work">SEE MY WORK <span>↘</span></a>
+          <a class="button button--outline" href="#contact">LET'S WORK <span>↗</span></a>
+        </div>
+
+        <div class="hero__meta">
+          <span>BASED IN BRAZIL</span>
+          <span>WORKING WORLDWIDE</span>
+          <span class="hero__meta-live"><i></i> TAKING CLIENTS</span>
         </div>
       </div>
 
-      <div class="hero__editor glass">
-        <div class="editor__top">
-          <div class="window-controls" aria-hidden="true">
-            <span></span><span></span><span></span>
-          </div>
-          <span class="editor__path">/home/iarley/projects/showreel</span>
-          <span class="editor__time" id="timecode">00:00:00:00</span>
-        </div>
+      <div class="hero__visual">
+        <div class="hero__sticker hero__sticker--top">FAST<br>+ CLEAN</div>
+        <div class="hero__sticker hero__sticker--side">GAMING<br>ONLY*</div>
 
-        <div class="editor__viewer">
-          <div class="viewer__noise"></div>
-          <div class="viewer__center">
-            <span class="viewer__tag">TIMELINE 01</span>
-            <strong>EDITING<br>IN PROGRESS</strong>
-            <small>sequence_1080p.prproj</small>
+        <article class="feature-card tilt-card" data-id="SOAxJ7F1R_8" data-title="Video 01" data-type="long">
+          <div class="feature-card__media">
+            <img src="https://img.youtube.com/vi/SOAxJ7F1R_8/maxresdefault.jpg" alt="Video 01 thumbnail" loading="eager">
+            <div class="thumb-fallback">GAMING<br>EDIT</div>
+            <button class="play-button" type="button" aria-label="Play Video 01">▶</button>
+            <span class="feature-card__tag">FEATURED EDIT</span>
           </div>
-        </div>
-
-        <div class="timeline">
-          <div class="timeline__ruler">
-            <span>00:00</span><span>00:05</span><span>00:10</span><span>00:15</span>
-            <span>00:20</span><span>00:25</span><span>00:30</span>
-            <i class="timeline__playhead"></i>
+          <div class="feature-card__footer">
+            <div>
+              <span class="card-eyebrow">01 / LONG-FORM</span>
+              <h2>Video 01</h2>
+            </div>
+            <span class="arrow-badge">↗</span>
           </div>
+        </article>
 
-          <div class="timeline__track">
-            <span class="track-label">V1</span>
-            <div class="clip clip--wide"><b>MAIN CUT</b><small>talking_head.mov</small></div>
-            <div class="clip"><b>B-ROLL</b><small>gameplay.mp4</small></div>
-            <div class="clip clip--short"><b>ZOOM</b></div>
-            <div class="clip"><b>STORY</b><small>sequence_04</small></div>
-          </div>
+        <div class="floating-block floating-block--blue"><span>WIGGLE</span></div>
+        <div class="floating-block floating-block--lime"><span>100%</span></div>
+      </div>
+    </section>
 
-          <div class="timeline__track timeline__track--audio">
-            <span class="track-label">A1</span>
-            <div class="waveform" id="nleWaveform"></div>
-          </div>
-        </div>
+    <div class="ticker" aria-label="Editing specialties">
+      <div class="ticker__track">
+        <span>GAMING</span><b>✦</b><span>FAST PACING</span><b>✦</b><span>MOTION GRAPHICS</span><b>✦</b><span>SOUND DESIGN</span><b>✦</b><span>SHORTS</span><b>✦</b><span>STORYTELLING</span><b>✦</b>
+        <span>GAMING</span><b>✦</b><span>FAST PACING</span><b>✦</b><span>MOTION GRAPHICS</span><b>✦</b><span>SOUND DESIGN</span><b>✦</b><span>SHORTS</span><b>✦</b><span>STORYTELLING</span><b>✦</b>
+      </div>
+    </div>
 
-        <div class="editor__bottom">
-          <span>1080p</span>
-          <span>60 FPS</span>
-          <span>REC709</span>
-          <span class="editor__ready">● READY TO EXPORT</span>
+    <section class="about-home section" id="about">
+      <div class="about-home__copy">
+        <p class="eyebrow">01 — about me</p>
+        <h2>GAMING EDITOR.<br><span>BUILT FOR RETENTION.</span></h2>
+        <p class="about-home__body">I turn raw gaming footage into fast, clean and entertaining videos — from long-form YouTube stories to high-energy Shorts. My style combines sharp pacing, motion graphics and sound design without letting effects get in the way of the video.</p>
+        <div class="about-home__facts">
+          <span>PREMIERE PRO</span><span>AFTER EFFECTS</span><span>PHOTOSHOP</span><span>WORLDWIDE</span>
         </div>
       </div>
-
-      <div class="hero__meta">
-        <span>VIDEO EDITOR / BRAZIL</span>
-        <span>01 — 04</span>
+      <div class="about-home__stats" aria-label="Portfolio statistics">
+        <article class="stat-card stat-card--views">
+          <span class="stat-card__label">TOTAL VIEWS</span>
+          <strong id="totalViews">—</strong>
+          <small id="viewsStatus">Loading portfolio views…</small>
+        </article>
+        <article class="stat-card">
+          <span class="stat-card__label">VIDEOS</span>
+          <strong id="videoCount">20</strong>
+          <small>Selected portfolio videos</small>
+        </article>
+        <article class="stat-card">
+          <span class="stat-card__label">FORMAT</span>
+          <strong>LONG + SHORT</strong>
+          <small>YouTube gaming content</small>
+        </article>
       </div>
     </section>
 
     <section class="work section" id="work">
-      <div class="section-heading">
+      <div class="section-top">
         <div>
-          <p class="eyebrow">Selected work</p>
-          <h2>Recent edits</h2>
+          <p class="eyebrow">01 — selected work</p>
+          <h2>THE EDITS.</h2>
         </div>
-        <p>Browse my edits by style. Select a category, then click any video to preview the full edit.</p>
+        <p class="section-note">Long-form edits and Shorts, separated cleanly so clients can find the format they need.</p>
       </div>
 
-      <div class="video-categories" role="tablist" aria-label="Video categories">
-        <button class="category-tab is-active" type="button" data-category="all">All work</button>
-        <button class="category-tab" type="button" data-category="engaging">Engaging</button>
-        <button class="category-tab" type="button" data-category="storytelling">Storytelling</button>
-        <button class="category-tab" type="button" data-category="gaming">Gaming</button>
-        <button class="category-tab" type="button" data-category="short-form">Short-form</button>
+      <div class="work-tabs" role="tablist" aria-label="Video type">
+        <button class="work-tab is-active" type="button" data-work-tab="long" role="tab" aria-selected="true">LONG-FORM</button>
+        <button class="work-tab" type="button" data-work-tab="shorts" role="tab" aria-selected="false">SHORTS</button>
       </div>
 
+      <div class="portfolio-view is-active" id="longFormGrid" data-view="long">
+        <div class="portfolio-grid">
+          <button class="portfolio-card portfolio-card--large tilt-card" type="button" data-id="SOAxJ7F1R_8" data-title="Video 01" data-type="long">
+            <span class="portfolio-card__image"><img src="https://img.youtube.com/vi/SOAxJ7F1R_8/maxresdefault.jpg" alt="Video 01" loading="lazy"><i class="portfolio-card__play">▶</i></span>
+            <span class="portfolio-card__caption"><span><small>LONG-FORM</small><strong>Video 01</strong></span><em>↗</em></span>
+          </button>
+          <button class="portfolio-card portfolio-card--tall tilt-card" type="button" data-id="8Fg0LSk1pmY" data-title="Video 02" data-type="long">
+            <span class="portfolio-card__image"><img src="https://img.youtube.com/vi/8Fg0LSk1pmY/maxresdefault.jpg" alt="Video 02" loading="lazy"><i class="portfolio-card__play">▶</i></span>
+            <span class="portfolio-card__caption"><span><small>LONG-FORM</small><strong>Video 02</strong></span><em>↗</em></span>
+          </button>
+          <button class="portfolio-card tilt-card" type="button" data-id="5OUJnLcb6lI" data-title="Video 03" data-type="long">
+            <span class="portfolio-card__image"><img src="https://img.youtube.com/vi/5OUJnLcb6lI/maxresdefault.jpg" alt="Video 03" loading="lazy"><i class="portfolio-card__play">▶</i></span>
+            <span class="portfolio-card__caption"><span><small>LONG-FORM</small><strong>Video 03</strong></span><em>↗</em></span>
+          </button>
+          <button class="portfolio-card portfolio-card--wide tilt-card" type="button" data-id="vEqPxgzor2Y" data-title="Video 04" data-type="long">
+            <span class="portfolio-card__image"><img src="https://img.youtube.com/vi/vEqPxgzor2Y/maxresdefault.jpg" alt="Video 04" loading="lazy"><i class="portfolio-card__play">▶</i></span>
+            <span class="portfolio-card__caption"><span><small>LONG-FORM</small><strong>Video 04</strong></span><em>↗</em></span>
+          </button>
+          <button class="portfolio-card portfolio-card--large tilt-card" type="button" data-id="xkB_XB-XIIg" data-title="Video 05" data-type="long">
+            <span class="portfolio-card__image"><img src="https://img.youtube.com/vi/xkB_XB-XIIg/maxresdefault.jpg" alt="Video 05" loading="lazy"><i class="portfolio-card__play">▶</i></span>
+            <span class="portfolio-card__caption"><span><small>LONG-FORM</small><strong>Video 05</strong></span><em>↗</em></span>
+          </button>
+          <button class="portfolio-card portfolio-card--tall tilt-card" type="button" data-id="DRIFpDfwA9k" data-title="Featured cut" data-type="long">
+            <span class="portfolio-card__image"><img src="https://img.youtube.com/vi/DRIFpDfwA9k/maxresdefault.jpg" alt="Featured cut" loading="lazy"><i class="portfolio-card__play">▶</i></span>
+            <span class="portfolio-card__caption"><span><small>LONG-FORM</small><strong>Featured cut</strong></span><em>↗</em></span>
+          </button>
+          <button class="portfolio-card tilt-card" type="button" data-id="1wDBGx-JlHs" data-title="Video 06" data-type="long">
+            <span class="portfolio-card__image"><img src="https://img.youtube.com/vi/1wDBGx-JlHs/maxresdefault.jpg" alt="Video 06" loading="lazy"><i class="portfolio-card__play">▶</i></span>
+            <span class="portfolio-card__caption"><span><small>LONG-FORM</small><strong>Video 06</strong></span><em>↗</em></span>
+          </button>
+          <button class="portfolio-card portfolio-card--wide tilt-card" type="button" data-id="_G4I8Jvd3jU" data-title="Video 07" data-type="long">
+            <span class="portfolio-card__image"><img src="https://img.youtube.com/vi/_G4I8Jvd3jU/maxresdefault.jpg" alt="Video 07" loading="lazy"><i class="portfolio-card__play">▶</i></span>
+            <span class="portfolio-card__caption"><span><small>LONG-FORM</small><strong>Video 07</strong></span><em>↗</em></span>
+          </button>
+          <button class="portfolio-card portfolio-card--large tilt-card" type="button" data-id="NmHEMBcHlx0" data-title="Video 08" data-type="long">
+            <span class="portfolio-card__image"><img src="https://img.youtube.com/vi/NmHEMBcHlx0/maxresdefault.jpg" alt="Video 08" loading="lazy"><i class="portfolio-card__play">▶</i></span>
+            <span class="portfolio-card__caption"><span><small>LONG-FORM</small><strong>Video 08</strong></span><em>↗</em></span>
+          </button>
+          <button class="portfolio-card portfolio-card--tall tilt-card" type="button" data-id="iArBNx0_SVw" data-title="Video 09" data-type="long">
+            <span class="portfolio-card__image"><img src="https://img.youtube.com/vi/iArBNx0_SVw/maxresdefault.jpg" alt="Video 09" loading="lazy"><i class="portfolio-card__play">▶</i></span>
+            <span class="portfolio-card__caption"><span><small>LONG-FORM</small><strong>Video 09</strong></span><em>↗</em></span>
+          </button>
+          <button class="portfolio-card tilt-card" type="button" data-id="TzDF9J_hOm8" data-title="Video 10" data-type="long">
+            <span class="portfolio-card__image"><img src="https://img.youtube.com/vi/TzDF9J_hOm8/maxresdefault.jpg" alt="Video 10" loading="lazy"><i class="portfolio-card__play">▶</i></span>
+            <span class="portfolio-card__caption"><span><small>LONG-FORM</small><strong>Video 10</strong></span><em>↗</em></span>
+          </button>
+          <button class="portfolio-card portfolio-card--wide tilt-card" type="button" data-id="nactHjNF55A" data-title="Video 11" data-type="long">
+            <span class="portfolio-card__image"><img src="https://img.youtube.com/vi/nactHjNF55A/maxresdefault.jpg" alt="Video 11" loading="lazy"><i class="portfolio-card__play">▶</i></span>
+            <span class="portfolio-card__caption"><span><small>LONG-FORM</small><strong>Video 11</strong></span><em>↗</em></span>
+          </button>
+          <button class="portfolio-card portfolio-card--large tilt-card" type="button" data-id="roQ-9guBwnI" data-title="Video 12" data-type="long">
+            <span class="portfolio-card__image"><img src="https://img.youtube.com/vi/roQ-9guBwnI/maxresdefault.jpg" alt="Video 12" loading="lazy"><i class="portfolio-card__play">▶</i></span>
+            <span class="portfolio-card__caption"><span><small>LONG-FORM</small><strong>Video 12</strong></span><em>↗</em></span>
+          </button>
+          <button class="portfolio-card portfolio-card--tall tilt-card" type="button" data-id="w040lMC3JjY" data-title="Video 13" data-type="long">
+            <span class="portfolio-card__image"><img src="https://img.youtube.com/vi/w040lMC3JjY/maxresdefault.jpg" alt="Video 13" loading="lazy"><i class="portfolio-card__play">▶</i></span>
+            <span class="portfolio-card__caption"><span><small>LONG-FORM</small><strong>Video 13</strong></span><em>↗</em></span>
+          </button>
+          <button class="portfolio-card tilt-card" type="button" data-id="aq-MbU3zF9o" data-title="Theme Park Tycoon 2" data-type="long">
+            <span class="portfolio-card__image"><img src="https://img.youtube.com/vi/aq-MbU3zF9o/maxresdefault.jpg" alt="Theme Park Tycoon 2" loading="lazy"><i class="portfolio-card__play">▶</i></span>
+            <span class="portfolio-card__caption"><span><small>LONG-FORM</small><strong>Theme Park Tycoon 2</strong></span><em>↗</em></span>
+          </button>
+          <button class="portfolio-card portfolio-card--wide tilt-card" type="button" data-id="NY8gdYAH-BU" data-title="Video 15" data-type="long">
+            <span class="portfolio-card__image"><img src="https://img.youtube.com/vi/NY8gdYAH-BU/maxresdefault.jpg" alt="Video 15" loading="lazy"><i class="portfolio-card__play">▶</i></span>
+            <span class="portfolio-card__caption"><span><small>LONG-FORM</small><strong>Video 15</strong></span><em>↗</em></span>
+          </button>
+        </div>
       </div>
 
-      <div class="showcase glass">
-        <div class="showcase__header">
-          <div>
-            <span class="mono-muted">/projects/recent</span>
-            <strong id="showroomTitle">Video 01</strong>
-          </div>
-          <span class="mono-muted"><span id="showroomPos">01</span> / <span id="showroomTotal">15</span></span>
-        </div>
+      <div class="portfolio-view" id="shortsGrid" data-view="shorts" hidden>
+        <div class="portfolio-grid portfolio-grid--shorts">
+          <button class="portfolio-card portfolio-card--short" type="button" data-id="p-lLAU-Nl4U" data-title="Short 01" data-type="shorts">
+          <span class="portfolio-card__image"><img src="https://img.youtube.com/vi/p-lLAU-Nl4U/maxresdefault.jpg" alt="Short 01" loading="lazy"><i class="portfolio-card__play">▶</i></span>
+          <span class="portfolio-card__caption"><span><small>SHORTS</small><strong>Short 01</strong></span><em>↗</em></span>
+        </button>
 
-        <div class="showcase__frame" id="showroomViewer">
-          <iframe
-            id="showroomFrame"
-            src="https://www.youtube-nocookie.com/embed/SOAxJ7F1R_8"
-            title="Video 01"
-            loading="lazy"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen></iframe>
-        </div>
+          <button class="portfolio-card portfolio-card--short" type="button" data-id="htkc2gO0IjE" data-title="Short 02" data-type="shorts">
+          <span class="portfolio-card__image"><img src="https://img.youtube.com/vi/htkc2gO0IjE/maxresdefault.jpg" alt="Short 02" loading="lazy"><i class="portfolio-card__play">▶</i></span>
+          <span class="portfolio-card__caption"><span><small>SHORTS</small><strong>Short 02</strong></span><em>↗</em></span>
+        </button>
 
-        <div class="showcase__strip" id="showroomStripLong">
-          <button class="filmclip is-active" type="button" data-id="SOAxJ7F1R_8" data-title="Video 01" data-categories="engaging,gaming">
-            <img src="https://img.youtube.com/vi/SOAxJ7F1R_8/mqdefault.jpg" alt="Video 01" loading="lazy">
-          </button>
-          <button class="filmclip" type="button" data-id="8Fg0LSk1pmY" data-title="Video 02" data-categories="storytelling,gaming">
-            <img src="https://img.youtube.com/vi/8Fg0LSk1pmY/mqdefault.jpg" alt="Video 02" loading="lazy">
-          </button>
-          <button class="filmclip" type="button" data-id="5OUJnLcb6lI" data-title="Video 03" data-categories="engaging,gaming">
-            <img src="https://img.youtube.com/vi/5OUJnLcb6lI/mqdefault.jpg" alt="Video 03" loading="lazy">
-          </button>
-          <button class="filmclip" type="button" data-id="vEqPxgzor2Y" data-title="Video 04" data-categories="storytelling,gaming">
-            <img src="https://img.youtube.com/vi/vEqPxgzor2Y/mqdefault.jpg" alt="Video 04" loading="lazy">
-          </button>
-          <button class="filmclip" type="button" data-id="xkB_XB-XIIg" data-title="Video 05" data-categories="engaging,gaming">
-            <img src="https://img.youtube.com/vi/xkB_XB-XIIg/mqdefault.jpg" alt="Video 05" loading="lazy">
-          </button>
-          <button class="filmclip" type="button" data-id="DRIFpDfwA9k" data-title="Featured cut" data-categories="engaging">
-            <img src="https://img.youtube.com/vi/DRIFpDfwA9k/mqdefault.jpg" alt="Featured cut" loading="lazy">
-          </button>
-          <button class="filmclip" type="button" data-id="1wDBGx-JlHs" data-title="Video 06" data-categories="gaming,storytelling">
-            <img src="https://img.youtube.com/vi/1wDBGx-JlHs/mqdefault.jpg" alt="Video 06" loading="lazy">
-          </button>
-          <button class="filmclip" type="button" data-id="_G4I8Jvd3jU" data-title="Video 07" data-categories="engaging,gaming">
-            <img src="https://img.youtube.com/vi/_G4I8Jvd3jU/mqdefault.jpg" alt="Video 07" loading="lazy">
-          </button>
-          <button class="filmclip" type="button" data-id="NmHEMBcHlx0" data-title="Video 08" data-categories="storytelling,gaming">
-            <img src="https://img.youtube.com/vi/NmHEMBcHlx0/mqdefault.jpg" alt="Video 08" loading="lazy">
-          </button>
-          <button class="filmclip" type="button" data-id="iArBNx0_SVw" data-title="Video 09" data-categories="engaging,gaming">
-            <img src="https://img.youtube.com/vi/iArBNx0_SVw/mqdefault.jpg" alt="Video 09" loading="lazy">
-          </button>
-          <button class="filmclip" type="button" data-id="TzDF9J_hOm8" data-title="Video 10" data-categories="engaging">
-            <img src="https://img.youtube.com/vi/TzDF9J_hOm8/mqdefault.jpg" alt="Video 10" loading="lazy">
-          </button>
-          <button class="filmclip" type="button" data-id="nactHjNF55A" data-title="Video 11" data-categories="storytelling,gaming">
-            <img src="https://img.youtube.com/vi/nactHjNF55A/mqdefault.jpg" alt="Video 11" loading="lazy">
-          </button>
+          <button class="portfolio-card portfolio-card--short" type="button" data-id="Dy0W0_Xd-RA" data-title="Short 03" data-type="shorts">
+          <span class="portfolio-card__image"><img src="https://img.youtube.com/vi/Dy0W0_Xd-RA/maxresdefault.jpg" alt="Short 03" loading="lazy"><i class="portfolio-card__play">▶</i></span>
+          <span class="portfolio-card__caption"><span><small>SHORTS</small><strong>Short 03</strong></span><em>↗</em></span>
+        </button>
 
-          <button class="filmclip" type="button" data-id="roQ-9guBwnI" data-title="Video 12" data-categories="engaging,gaming">
-            <img src="https://img.youtube.com/vi/roQ-9guBwnI/mqdefault.jpg" alt="Video 12" loading="lazy">
-          </button>
-          <button class="filmclip" type="button" data-id="w040lMC3JjY" data-title="Video 13" data-categories="storytelling,gaming">
-            <img src="https://img.youtube.com/vi/w040lMC3JjY/mqdefault.jpg" alt="Video 13" loading="lazy">
-          </button>
-          <button class="filmclip" type="button" data-id="aq-MbU3zF9o" data-title="Theme Park Tycoon 2" data-categories="engaging,gaming,storytelling">
-            <img src="https://img.youtube.com/vi/aq-MbU3zF9o/mqdefault.jpg" alt="Theme Park Tycoon 2" loading="lazy">
-          </button>
-          <button class="filmclip" type="button" data-id="NY8gdYAH-BU" data-title="Video 15" data-categories="engaging,gaming">
-            <img src="https://img.youtube.com/vi/NY8gdYAH-BU/mqdefault.jpg" alt="Video 15" loading="lazy">
-          </button>
-          <button class="filmclip" type="button" data-id="p-lLAU-Nl4U" data-title="Short 01" data-categories="short-form">
-            <img src="https://img.youtube.com/vi/p-lLAU-Nl4U/mqdefault.jpg" alt="Short 01" loading="lazy">
-          </button>
-          <button class="filmclip" type="button" data-id="htkc2gO0IjE" data-title="Short 02" data-categories="short-form">
-            <img src="https://img.youtube.com/vi/htkc2gO0IjE/mqdefault.jpg" alt="Short 02" loading="lazy">
-          </button>
-          <button class="filmclip" type="button" data-id="Dy0W0_Xd-RA" data-title="Short 03" data-categories="short-form">
-            <img src="https://img.youtube.com/vi/Dy0W0_Xd-RA/mqdefault.jpg" alt="Short 03" loading="lazy">
-          </button>
-          <button class="filmclip" type="button" data-id="J23Q5N3gK9A" data-title="Short 04" data-categories="short-form">
-            <img src="https://img.youtube.com/vi/J23Q5N3gK9A/mqdefault.jpg" alt="Short 04" loading="lazy">
-          </button>
+          <button class="portfolio-card portfolio-card--short" type="button" data-id="J23Q5N3gK9A" data-title="Short 04" data-type="shorts">
+          <span class="portfolio-card__image"><img src="https://img.youtube.com/vi/J23Q5N3gK9A/maxresdefault.jpg" alt="Short 04" loading="lazy"><i class="portfolio-card__play">▶</i></span>
+          <span class="portfolio-card__caption"><span><small>SHORTS</small><strong>Short 04</strong></span><em>↗</em></span>
+        </button>
         </div>
       </div>
     </section>
 
-
-    <section class="process section">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">Process</p>
-          <h2>Raw → final.</h2>
-        </div>
-        <p>The workflow stays simple: understand the story, tighten the timeline, then make every beat feel intentional.</p>
+    <section class="motions section" id="motions">
+      <div class="section-top">
+        <div><p class="eyebrow">02 — motion graphics</p><h2>THE MOTIONS.</h2></div>
+        <p class="section-note">A dedicated showcase for motion graphics and animated assets. Add your video files to <code>assets/</code> and update the generated manifest.</p>
       </div>
-
-      <div class="process__grid">
-        <article class="process-card glass">
-          <span class="process-card__index">01</span>
-          <div class="process-card__bar"><i></i></div>
-          <h3>Ingest</h3>
-          <p>Footage, references, music and the target of the video. Everything gets organized before the first cut.</p>
-          <small>/mnt/raw → /project/source</small>
-        </article>
-
-        <article class="process-card glass">
-          <span class="process-card__index">02</span>
-          <div class="process-card__bar"><i></i></div>
-          <h3>Cut</h3>
-          <p>Remove dead weight, shape the pacing and make the story work before adding anything flashy.</p>
-          <small>/timeline/main → sequence_01</small>
-        </article>
-
-        <article class="process-card glass">
-          <span class="process-card__index">03</span>
-          <div class="process-card__bar"><i></i></div>
-          <h3>Polish</h3>
-          <p>Sound design, motion, graphics and the tiny details that turn a rough cut into a finished video.</p>
-          <small>/export/master → ready</small>
-        </article>
+      <div class="motion-toolbar">
+        <span class="motion-count" id="motionCount">SCANNING ASSETS…</span>
+        <span class="motion-hint">Use the sound toggle on each preview</span>
       </div>
-    </section>
-
-    <section class="about section" id="about">
-      <div class="about__panel glass">
-        <div class="about__terminal">
-          <span class="mono-muted">$ cat about.md</span>
-          <h2>Editor focused on<br><span>retention.</span></h2>
-          <p>
-            I turn raw footage into fast, clean and intentional edits for creators.
-            Every cut has a purpose: improve the story, the rhythm or the viewer experience.
-          </p>
-        </div>
-
-        <div class="about__details">
-          <div><span>01</span><strong>Storytelling</strong><small>Structure that makes the next second matter.</small></div>
-          <div><span>02</span><strong>Pacing</strong><small>Fast when it should be. Quiet when it needs to breathe.</small></div>
-          <div><span>03</span><strong>Sound + motion</strong><small>SFX, music and motion that support the edit.</small></div>
-        </div>
+      <div class="motion-grid" id="motionGrid" aria-live="polite">
+        <div class="motion-empty" id="motionStatus">Loading motion graphics…</div>
       </div>
     </section>
 
     <section class="contact section" id="contact">
-      <div class="contact__panel glass">
+      <div class="contact__panel">
         <div>
-          <p class="eyebrow">New project</p>
-          <h2>Got footage?<br><span>Let's make it hit.</span></h2>
-          <p>Send the footage, deadline and references. I'll take it from there.</p>
-          <div class="contact__terminal">
-            <span>iarley@editor:~$</span>
-            <strong id="contactCommand">ready_for_new_project</strong><i>▌</i>
-          </div>
+          <p class="eyebrow">03 — contact</p>
+          <h2>GOT A VIDEO?<br><span>LET'S COOK.</span></h2>
+          <p class="contact__sub">Send the footage, idea, deadline and references. I'll handle the edit.</p>
         </div>
-
-        <div class="contact__links">
-          <a class="contact__email" href="mailto:iarleyvisualsgfx@gmail.com">iarleyvisualsgfx@gmail.com</a>
-          <div class="contact__socials">
-            <a href="https://ytjobs.co/talent/profile/579002" target="_blank" rel="noopener">YTJobs</a>
-            <a href="https://x.com/iarleyvisuals" target="_blank" rel="noopener">X / Twitter</a>
+        <div class="contact__side">
+          <a class="contact__mail" href="mailto:iarleyvisualsgfx@gmail.com">iarleyvisualsgfx@gmail.com</a>
+          <div class="contact__links">
+            <a href="https://ytjobs.co/talent/profile/579002" target="_blank" rel="noopener">YTJobs ↗</a>
+            <a href="https://x.com/iarleyvisuals" target="_blank" rel="noopener">X / Twitter ↗</a>
             <button type="button" id="discordCopy" data-copy="iarleyvfx2k26">Discord: iarleyvfx2k26</button>
           </div>
+          <span class="contact__availability"><i></i> ACCEPTING NEW PROJECTS</span>
         </div>
       </div>
     </section>
   </main>
 
   <footer class="footer">
-    <span>iarley@editor:~$ exit</span>
-    <span>© <span id="year"></span> Iarley Prod</span>
+    <span>© <span id="year"></span> IARLEY VISUALS</span>
+    <span>GAMING / YOUTUBE / EDITING</span>
   </footer>
+
+  <div class="motion-modal" id="motionModal" aria-hidden="true">
+    <div class="motion-modal__backdrop" data-close-motion></div>
+    <div class="motion-modal__dialog" role="dialog" aria-modal="true" aria-label="Motion graphic player">
+      <button class="modal__close" id="motionModalClose" type="button" aria-label="Close motion">×</button>
+      <div class="modal__top"><span>MOTION GRAPHIC</span><strong id="motionModalTitle">Motion</strong></div>
+      <video id="motionModalVideo" controls playsinline></video>
+    </div>
+  </div>
+
+  <div class="modal" id="videoModal" aria-hidden="true">
+    <div class="modal__backdrop" data-close-modal></div>
+    <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button class="modal__close" id="modalClose" type="button" aria-label="Close video">×</button>
+      <div class="modal__top"><span id="modalCategory">VIDEO</span><strong id="modalTitle">Video</strong></div>
+      <div class="modal__player"><iframe id="modalFrame" title="Portfolio video" src="about:blank" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>
