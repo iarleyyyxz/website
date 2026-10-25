@@ -87,13 +87,17 @@
   const modalTitle = document.getElementById("modalTitle");
   const modalCategory = document.getElementById("modalCategory");
   const close = document.getElementById("modalClose");
+  const fallback = document.getElementById("modalFallback");
 
   const openVideo = button => {
     const id = button.dataset.id;
     if (!id || !modal) return;
     modalTitle.textContent = button.dataset.title || "Portfolio video";
     modalCategory.textContent = button.dataset.type === "shorts" ? "SHORTS" : "LONG-FORM";
-    frame.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`;
+    // Free the hardware video decoders: stop all motion previews while YouTube plays.
+    document.querySelectorAll(".motion-card__video").forEach(v => v.pause());
+    if (fallback) fallback.href = `https://www.youtube.com/watch?v=${id}`;
+    frame.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&playsinline=1&origin=${encodeURIComponent(location.origin)}`;
     modal.classList.add("is-open");
     modal.setAttribute("aria-hidden", "false");
     document.body.classList.add("modal-open");
@@ -106,6 +110,7 @@
     modal.setAttribute("aria-hidden", "true");
     document.body.classList.remove("modal-open");
     frame.src = "about:blank";
+    document.querySelectorAll(".motion-card__video").forEach(v => { const r = v.getBoundingClientRect(); if (r.bottom > 0 && r.top < innerHeight) v.play().catch(() => {}); });
   };
 
   document.querySelectorAll(".portfolio-card").forEach(card => card.addEventListener("click", () => openVideo(card)));
@@ -167,13 +172,14 @@ const motionObserver = "IntersectionObserver" in window
         if (motionCount) motionCount.textContent = "0 MOTIONS";
         return;
       }
-      const supported = items.filter(item => item && item.src && /\.(mp4|webm|ogv|ogg|mov)(\?.*)?$/i.test(item.src));
+      const supported = items.filter(item => item && item.src && /\.(mp4|webm)(\?.*)?$/i.test(item.src));
       supported.forEach((item, index) => {
         const card = document.createElement("article");
         card.className = "motion-card";
         const video = document.createElement("video");
         video.className = "motion-card__video";
-        video.src = item.src; video.muted = true; video.loop = true; video.autoplay = !motionObserver; video.playsInline = true; video.preload = "metadata";
+        video.src = item.src + "#t=0.001"; video.muted = true; video.loop = true; video.autoplay = !motionObserver; video.playsInline = true; video.preload = "metadata"; video.setAttribute("playsinline", ""); video.setAttribute("webkit-playsinline", "");
+        video.addEventListener("error", () => { media.classList.add("is-broken"); const note = document.createElement("div"); note.className = "motion-empty"; note.textContent = "Video codec not supported by this browser. Re-encode to H.264 (see convert-motions.sh)."; media.appendChild(note); console.warn("Motion video failed:", item.src, video.error); });
         video.setAttribute("aria-label", item.title || `Motion ${index + 1}`);
         const media = document.createElement("div"); media.className = "motion-card__media"; media.appendChild(video);
         const overlay = document.createElement("button"); overlay.className = "motion-card__open"; overlay.type = "button"; overlay.textContent = "↗"; overlay.setAttribute("aria-label", `Open ${item.title || `Motion ${index + 1}`}`);

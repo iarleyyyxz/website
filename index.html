@@ -294,7 +294,8 @@
     <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
       <button class="modal__close" id="modalClose" type="button" aria-label="Close video">×</button>
       <div class="modal__top"><span id="modalCategory">VIDEO</span><strong id="modalTitle">Video</strong></div>
-      <div class="modal__player"><iframe id="modalFrame" title="Portfolio video" src="about:blank" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+      <div class="modal__player"><iframe id="modalFrame" title="Portfolio video" src="about:blank" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+      <a class="modal__fallback" id="modalFallback" href="#" target="_blank" rel="noopener">Video not showing? <span style="color:var(--accent)">Watch on YouTube ↗</span></a>
     </div>
   </div>
 
