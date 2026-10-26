@@ -1,15 +1,7 @@
 [
   {
-    "title": "99 Nights in the Forest",
+    "title": "99 Nights In The Forest",
     "src": "assets/99%20Nights%20in%20the%20Forest.mp4"
-  },
-  {
-    "title": "Intro SMP",
-    "src": "assets/Intro%20SMP.mp4"
-  },
-  {
-    "title": "Murder Mistery 2",
-    "src": "assets/Murder%20Mistery%202.mp4"
   },
   {
     "title": "Roblox Tournament",
@@ -22,5 +14,13 @@
   {
     "title": "Theme Park Tycoon 2",
     "src": "assets/Theme%20Park%20Tycoon%202.mp4"
+  },
+  {
+    "title": "Murder Mistery 2",
+    "src": "assets/Murder%20Mistery%202.mp4"
+  },
+  {
+    "title": "Intro SMP",
+    "src": "assets/Intro%20SMP.mp4"
   }
 ]

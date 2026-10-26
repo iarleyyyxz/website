@@ -11,6 +11,18 @@
   <meta property="og:title" content="Iarley — Gaming Video Editor">
   <meta property="og:description" content="Fast-paced gaming edits, motion graphics and storytelling built for retention.">
   <meta property="og:url" content="https://iarleyvisuals.com/">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:image" content="https://iarleyvisuals.com/og-image.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Iarley.VFX — I make gaming videos hit. Gaming video editor.">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Iarley — Gaming Video Editor">
+  <meta name="twitter:description" content="Fast-paced gaming edits, motion graphics and storytelling built for retention.">
+  <meta name="twitter:image" content="https://iarleyvisuals.com/og-image.png">
+  <meta name="theme-color" content="#55b6ff">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -122,7 +134,7 @@
         </article>
         <article class="stat-card">
           <span class="stat-card__label">VIDEOS</span>
-          <strong id="videoCount">20</strong>
+          <strong id="videoCount">21</strong>
           <small>Selected portfolio videos</small>
         </article>
         <article class="stat-card">
@@ -213,6 +225,10 @@
             <span class="portfolio-card__image"><img src="https://img.youtube.com/vi/NY8gdYAH-BU/maxresdefault.jpg" alt="Video 15" loading="lazy"><i class="portfolio-card__play">▶</i></span>
             <span class="portfolio-card__caption"><span><small>LONG-FORM</small><strong>Video 15</strong></span><em>↗</em></span>
           </button>
+          <button class="portfolio-card tilt-card" type="button" data-id="KM0BDc9SFyY" data-title="Bee Swarm Simulator" data-type="long">
+            <span class="portfolio-card__image"><img src="https://img.youtube.com/vi/KM0BDc9SFyY/maxresdefault.jpg" alt="Bee Swarm Simulator" loading="lazy"><i class="portfolio-card__play">▶</i></span>
+            <span class="portfolio-card__caption"><span><small>LONG-FORM</small><strong>Bee Swarm Simulator</strong></span><em>↗</em></span>
+          </button>
         </div>
       </div>
 
@@ -289,13 +305,29 @@
     </div>
   </div>
 
-  <div class="modal" id="videoModal" aria-hidden="true">
-    <div class="modal__backdrop" data-close-modal></div>
-    <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-      <button class="modal__close" id="modalClose" type="button" aria-label="Close video">×</button>
-      <div class="modal__top"><span id="modalCategory">VIDEO</span><strong id="modalTitle">Video</strong></div>
-      <div class="modal__player"><iframe id="modalFrame" title="Portfolio video" src="about:blank" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
-      <a class="modal__fallback" id="modalFallback" href="#" target="_blank" rel="noopener">Video not showing? <span style="color:var(--accent)">Watch on YouTube ↗</span></a>
+  <div class="vp" id="videoModal" aria-hidden="true">
+    <div class="vp__backdrop" data-close-modal></div>
+    <div class="vp__dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button class="vp__close" id="modalClose" type="button" aria-label="Close video">×</button>
+      <div class="vp__top"><span id="modalCategory">VIDEO</span><strong id="modalTitle">Video</strong></div>
+      <div class="vp__player" id="vpPlayer">
+        <div class="vp__stage" id="vpStage">
+          <div id="vpMount"></div>
+          <button class="vp__hit" id="vpHit" type="button" tabindex="-1" aria-hidden="true"><span class="vp__badge">▶</span></button>
+          <div class="vp__status" id="vpStatus"><span id="vpStatusText">LOADING VIDEO…</span><a id="vpStatusLink" href="#" target="_blank" rel="noopener" hidden>WATCH ON YOUTUBE ↗</a></div>
+        </div>
+        <div class="vp__controls" id="vpControls">
+          <input class="vp__seek" id="vpSeek" type="range" min="0" max="1000" value="0" step="1" aria-label="Seek">
+          <button class="vp__btn vp__btn--play" id="vpPlay" type="button" aria-label="Play">▶</button>
+          <span class="vp__time" id="vpTime">0:00 / 0:00</span>
+          <span class="vp__spacer"></span>
+          <button class="vp__btn" id="vpMute" type="button" aria-label="Mute">🔊</button>
+          <input class="vp__vol" id="vpVol" type="range" min="0" max="100" value="100" step="1" aria-label="Volume">
+          <button class="vp__btn" id="vpSpeed" type="button" aria-label="Playback speed">1×</button>
+          <button class="vp__btn" id="vpFs" type="button" aria-label="Fullscreen">⛶</button>
+          <a class="vp__btn" id="vpYt" href="https://www.youtube.com/" target="_blank" rel="noopener" aria-label="Open on YouTube">YT ↗</a>
+        </div>
+      </div>
     </div>
   </div>
 
